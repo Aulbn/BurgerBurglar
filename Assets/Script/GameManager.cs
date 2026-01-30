@@ -5,7 +5,7 @@ public class GameManager : MonoBehaviour
     public static GameManager Instance;
 
     [SerializeField] private Transform _CustomerSpawnTransform;
-    public Vector3 _CustomerSpawnPosition =>  _CustomerSpawnTransform.position;
+    public static Vector3 CustomerSpawnPosition =>  Instance._CustomerSpawnTransform.position;
 
     void Awake()
     {
