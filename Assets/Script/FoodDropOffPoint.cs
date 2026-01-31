@@ -12,8 +12,8 @@ public class FoodDropOffPoint : MonoBehaviour, IInteractable
     public void Interact()
     {
         Debug.Log("Gave burger to customer", gameObject);
-        PlayerController.Instance.IsCarryingMeat = false;
-        PlayerController.Instance.IsCarryingBread = false;
+        PlayerController.ToggleMeat(false);
+        PlayerController.ToggleBread(false);
         GameManager.RegisterQueue.QueueList[0].GiveOrder();
     }
 }

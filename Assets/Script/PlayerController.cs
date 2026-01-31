@@ -17,6 +17,8 @@ public class PlayerController : MonoBehaviour
     public GameObject GunMesh;
     public GameObject MaskMesh;
     public GameObject CapMesh;
+    public GameObject MeatMesh;
+    public GameObject BreadMesh;
     public bool HasMaskOn;
     public bool IsCarryingMeat;
     public bool IsCarryingBread;
@@ -27,6 +29,7 @@ public class PlayerController : MonoBehaviour
 
     private CharacterController _Cc;
     private PlayerInputHandler _Input;
+    public PlayerInputHandler Input => _Input;
     private PlayerInteraction _Interact;
     private PlayerAnimationController _Animation;
 
@@ -60,12 +63,32 @@ public class PlayerController : MonoBehaviour
         _CurrentSpeed = _JogSpeed;
         ToggleMask(false);
         ChangeState(PlayerState.Idle);
+        ToggleBread(false);
+        ToggleMeat(false);
     }
 
     private void Update()
     {
         UpdateState();
         _Animation.SetVelocity(_Cc.velocity.magnitude);
+
+        if (_CurrentState != PlayerState.Dead)
+        {
+            if (_Input.PauseWasPerformedThisFrame)
+                GameMenu.TogglePauseMenu();
+        }
+    }
+
+    public static void ToggleBread(bool value)
+    {
+        Instance.IsCarryingBread = value;
+        Instance.BreadMesh.SetActive(value);
+    }
+
+    public static void ToggleMeat(bool value)
+    {
+        Instance.IsCarryingMeat = value;
+        Instance.MeatMesh.SetActive(value);
     }
 
     private void ToggleMask() => ToggleMask(!HasMaskOn);
@@ -84,8 +107,8 @@ public class PlayerController : MonoBehaviour
     
     private void DropBurger()
     {
-        IsCarryingMeat = false;
-        IsCarryingBread  = false;
+        ToggleMeat(false);
+        ToggleBread(false);
         
         //Spawn some visuals (if you are carrying a burger)
     }
@@ -147,6 +170,11 @@ public class PlayerController : MonoBehaviour
             case PlayerState.Cooking:
                 break;
             case PlayerState.Robbing:
+                if (!_Input.IsHoldingAim)
+                {
+                    ChangeState(PlayerState.Idle);
+                    break;
+                }
                 _Cc.Move(Vector3.zero);
                 AlertSpeedMultiplier = 3;
                 if (_Interact.CastForHostages(transform.position, out var hostage))
@@ -166,7 +194,7 @@ public class PlayerController : MonoBehaviour
                 }
                 else
                 {
-                    if (_ThreatenedCustomer != null && _ThreatenedCustomer.GetTransform() != null)
+                    if (_ThreatenedCustomer != null)
                     {
                         // Debug.Log("Unthreaten customer " + _ThreatenedCustomer, _ThreatenedCustomer.GetTransform().gameObject);
                         _ThreatenedCustomer.OnUnThreaten();
@@ -174,9 +202,6 @@ public class PlayerController : MonoBehaviour
                     }
                     CameraController.Instance.SecondaryTargetTransform = null;
                 }
-                
-                if (!_Input.IsHoldingAim)
-                    ChangeState(PlayerState.Idle);
                 break;
             case PlayerState.Dead:
                 break;
@@ -194,6 +219,12 @@ public class PlayerController : MonoBehaviour
             case PlayerState.Cooking:
                 break;
             case PlayerState.Robbing:
+                if (_ThreatenedCustomer != null)
+                {
+                    _ThreatenedCustomer.OnUnThreaten();
+                    _ThreatenedCustomer = null;
+                }               
+                
                 CameraController.Instance.SecondaryTargetTransform = null;
                 GunMesh.SetActive(false);
                 _Animation.ToggleAim(false);

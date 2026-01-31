@@ -17,6 +17,6 @@ public class DressingTable : MonoBehaviour, IInteractable
     public void Interact()
     {
         Debug.Log("Picked up bread", gameObject);
-        PlayerController.Instance.IsCarryingBread = true;
+        PlayerController.ToggleBread(true);
     }
 }

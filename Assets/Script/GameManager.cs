@@ -29,7 +29,7 @@ public class GameManager : MonoBehaviour
 
     [Header("Money")] 
     [SerializeField] private float _CurrentMoney;
-    public float CurrentMoney => _CurrentMoney;
+    public static float CurrentMoney => Instance._CurrentMoney;
     public float BurgerPrice = 12.9f;
     public Vector2 MoneyStealRange = new Vector2(15f, 55f);
 
@@ -125,7 +125,20 @@ public class GameManager : MonoBehaviour
 
     public static void GameOver_HostagesEscaped()
     {
-        
+        ChangeState(GameState.GameOver);
+        GameMenu.ShowGameOverMenu("The hostages testimony made you lose", CurrentMoney);
+    }
+    public static void GameOver_ExitedDoor()
+    {
+        ChangeState(GameState.GameOver);
+        GameMenu.ShowGameOverMenu("You ran out the door with", CurrentMoney);
+    }
+    
+    public static void GameOver_Death()
+    {
+        ChangeState(GameState.GameOver);
+        GameMenu.ShowGameOverMenu("On your corpse they found", CurrentMoney);
+
     }
     
     public static void AddBurgerMoney()

@@ -13,6 +13,8 @@ public class PlayerInputHandler : MonoBehaviour
     [HideInInspector] public UnityEvent OnInteract;
     [HideInInspector] public bool InteractWasPerformedThisFrame;
     [HideInInspector] public bool MaskWasPerformedThisFrame;
+    [HideInInspector] public bool PauseWasPerformedThisFrame;
+    [HideInInspector] public bool HitWasPerformedThisFrame;
     [HideInInspector] public bool IsHoldingAim;
 
     void Awake()
@@ -48,6 +50,8 @@ public class PlayerInputHandler : MonoBehaviour
     {
         InteractWasPerformedThisFrame = _Input.actions.FindAction("Interact").WasPerformedThisFrame();
         MaskWasPerformedThisFrame = _Input.actions.FindAction("Mask").WasPerformedThisFrame();
+        PauseWasPerformedThisFrame = _Input.actions.FindAction("Pause").WasPerformedThisFrame();
+        HitWasPerformedThisFrame = _Input.actions.FindAction("Hit").WasPerformedThisFrame();
         IsHoldingAim = _Input.actions.FindAction("Aim").IsPressed();
     }
 

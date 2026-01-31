@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.UI;
 
 public class CustomerController : MonoBehaviour, ICustomer, IInteractable
 {
@@ -29,9 +30,13 @@ public class CustomerController : MonoBehaviour, ICustomer, IInteractable
     
     [Header("Alert")]
     [Range(0,1)] public float AlertAmount;
+    public GameObject AlertImageParent;
+    public Image AlertImageFill;
 
     public float GiveMoneyTime;
     public float Timer;
+
+    public Animator _Animator;
 
     public AIState CurrentState;
 
@@ -52,6 +57,11 @@ public class CustomerController : MonoBehaviour, ICustomer, IInteractable
     private void Update()
     {
         UpdateState();
+        _Animator.SetFloat("float_velocity", _Agent.velocity.magnitude);
+        AlertImageParent.SetActive(AlertAmount > 0);
+        AlertImageParent.transform.rotation = Quaternion.LookRotation(CameraController.Cam.transform.forward);
+        AlertImageFill.fillAmount = AlertAmount;
+        
     }
 
     private void ChangeState(AIState newState)
@@ -62,30 +72,31 @@ public class CustomerController : MonoBehaviour, ICustomer, IInteractable
         switch (newState)
         {
             case AIState.Queuing:
-                Debug.Log("Queuing");
+                // Debug.Log("Queuing");
                 _LeaveQueueTime = Time.time + MaxWaitTime;
                 JoinQueue();
                 break;
             case AIState.Alert:
-                Debug.Log("Alert");
+                // Debug.Log("Alert");
                 break;
             case AIState.Combat:
-                Debug.Log("Combat");
+                // Debug.Log("Combat");
                 break;
             case AIState.Fleeing:
-                Debug.Log("Fleeing");
+                // Debug.Log("Fleeing");
                 LeaveQueue();
                 _Agent.speed = FleeSpeed;
                 _Agent.SetDestination(GameManager.ExitPosition);
                 break;
             case AIState.Leaving:
-                Debug.Log("Leaving");
+                // Debug.Log("Leaving");
                 LeaveQueue();
                 _Agent.speed = NormalSpeed;
                 _Agent.SetDestination(GameManager.ExitPosition);
                 break;            
             case AIState.Threatened:
-                Debug.Log("Threatened");
+                // Debug.Log("Threatened");
+                AlertAmount = 0;
                 Timer = 0;
                 break;
         }
@@ -104,6 +115,8 @@ public class CustomerController : MonoBehaviour, ICustomer, IInteractable
                     _Agent.SetDestination(pos);
                 }
                 UpdateAlert();
+                if (AgentHasArrived())
+                    transform.rotation =Quaternion.Lerp(transform.rotation, Quaternion.LookRotation(-GameManager.RegisterQueue.transform.forward), Time.deltaTime * 8f);
                 if (AlertAmount > 0)
                     ChangeState(AIState.Alert);
                 
@@ -130,6 +143,8 @@ public class CustomerController : MonoBehaviour, ICustomer, IInteractable
                 break;
             case AIState.Threatened: 
                 Timer += Time.deltaTime;
+                AlertAmount = Timer /  GiveMoneyTime;
+                // Debug.Log($"{Timer} / {GiveMoneyTime}");
                 if (Timer >= GiveMoneyTime)
                 {
                     GameManager.AddStolenMoney();
@@ -156,7 +171,7 @@ public class CustomerController : MonoBehaviour, ICustomer, IInteractable
             case AIState.Leaving:
                 break;
             case AIState.Threatened:
-                Debug.Log("Exit Threatened");
+                // Debug.Log("Exit Threatened");
                 Timer = 0;
                 break;
         }
@@ -211,19 +226,19 @@ public class CustomerController : MonoBehaviour, ICustomer, IInteractable
     public void Interact()
     {
         Debug.Log("Interact with Customer", gameObject);
-        PlayerController.Instance.IsCarryingMeat = false;
-        PlayerController.Instance.IsCarryingBread = false;
+        PlayerController.ToggleMeat(false);
+        PlayerController.ToggleBread(false);
     }
 
     public void GiveOrder()
     {
         ChangeState(AIState.Leaving);
-        PlayerController.Instance.IsCarryingMeat = false;
-        PlayerController.Instance.IsCarryingBread = false;
+        PlayerController.ToggleMeat(false);
+        PlayerController.ToggleBread(false);
         GameManager.AddBurgerMoney();
     }
 
-    public Transform GetTransform() => transform == null ? null : transform;
+    public Transform GetTransform() => transform;
     public void OnThreaten()
     {
         if (CurrentState != AIState.Fleeing && CurrentState != AIState.Threatened)

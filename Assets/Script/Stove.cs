@@ -151,7 +151,7 @@ public class Stove : MonoBehaviour, IInteractable
             case StoveState.Cooking:
                 if (_Timer >= CookTime)
                 {
-                    PlayerController.Instance.IsCarryingMeat = true;
+                    PlayerController.ToggleMeat(true);
                     ChangeState(StoveState.Idle);
                 }
                 break;
