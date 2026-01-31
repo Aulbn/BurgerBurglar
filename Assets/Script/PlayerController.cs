@@ -189,6 +189,8 @@ public class PlayerController : MonoBehaviour
                     _TargetRotation = Quaternion.LookRotation(customer.GetTransform().position - transform.position);
                     transform.rotation = Quaternion.Lerp(transform.rotation,_TargetRotation,Time.deltaTime * _RotationSpeed);
                     CameraController.Instance.SecondaryTargetTransform = customer.GetTransform();
+                    if (_ThreatenedCustomer != null && _ThreatenedCustomer != customer)
+                        _ThreatenedCustomer.OnUnThreaten();
                     _ThreatenedCustomer = customer;
                     _ThreatenedCustomer.OnThreaten();
                 }

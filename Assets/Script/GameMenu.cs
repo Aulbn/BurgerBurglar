@@ -18,24 +18,24 @@ public class GameMenu : MonoBehaviour
         Instance = this;
     }
 
-    private void Update()
-    {
-        if (PauseMenuPanel.activeSelf)
-        {
-            if (PlayerController.Instance.Input.PauseWasPerformedThisFrame)
-                Resume();
-            if (PlayerController.Instance.Input.HitWasPerformedThisFrame)
-                Retry();
-        }
-        
-        if (GameOverPanel.activeSelf)
-        {
-            if (PlayerController.Instance.Input.PauseWasPerformedThisFrame)
-                Resume();
-            if (PlayerController.Instance.Input.HitWasPerformedThisFrame)
-                Retry();
-        }
-    }
+    // private void Update()
+    // {
+    //     if (PauseMenuPanel.activeSelf)
+    //     {
+    //         if (PlayerController.Instance.Input.PauseWasPerformedThisFrame)
+    //             Resume();
+    //         if (PlayerController.Instance.Input.HitWasPerformedThisFrame)
+    //             Retry();
+    //     }
+    //     
+    //     if (GameOverPanel.activeSelf)
+    //     {
+    //         if (PlayerController.Instance.Input.PauseWasPerformedThisFrame)
+    //             Resume();
+    //         if (PlayerController.Instance.Input.HitWasPerformedThisFrame)
+    //             Retry();
+    //     }
+    // }
 
     private void TogglePauseMenu(bool value)
     {
