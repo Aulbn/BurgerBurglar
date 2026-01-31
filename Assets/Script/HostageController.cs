@@ -2,6 +2,7 @@ using System;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.Serialization;
+using UnityEngine.UI;
 
 public class HostageController : MonoBehaviour
 {
@@ -9,6 +10,9 @@ public class HostageController : MonoBehaviour
     public float RunSpeed = 3;
     public float ScaredIncreaseTime;
 
+    public GameObject AlertImageParent;
+    public Image AlertImageFill;
+    
     public Animator _Animator;
     private NavMeshAgent _Agent;
     
@@ -35,6 +39,9 @@ public class HostageController : MonoBehaviour
     private void Update()
     {
         UpdateState();
+        AlertImageParent.SetActive(ScaredAmount > 0);
+        AlertImageParent.transform.rotation = Quaternion.LookRotation(CameraController.Cam.transform.forward);
+        AlertImageFill.fillAmount = ScaredAmount;
     }
 
     private void ChangeState(HostageState newState)
@@ -47,6 +54,7 @@ public class HostageController : MonoBehaviour
         {
             case HostageState.Idle:
                 Debug.Log("Idle");
+                ScaredAmount = 0;
                 _Animator.SetFloat("float_velocity", 0);
                 break;
             case HostageState.Escaping:
@@ -57,6 +65,7 @@ public class HostageController : MonoBehaviour
                 break;
             case HostageState.Returning:
                 Debug.Log("Returning");
+                ScaredAmount = 0;
                 _Animator.SetFloat("float_velocity", 1);
                 _Agent.SetDestination(HostageGroupController.GetSitPosition(this));
                 break;

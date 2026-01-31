@@ -183,6 +183,11 @@ public class PlayerController : MonoBehaviour
                     transform.rotation = Quaternion.Lerp(transform.rotation,_TargetRotation,Time.deltaTime * _RotationSpeed);
                     CameraController.Instance.SecondaryTargetTransform = hostage.transform;
                     hostage.IncreaseScared();
+                    if (_ThreatenedCustomer != null)
+                    {
+                        _ThreatenedCustomer.OnUnThreaten();
+                        _ThreatenedCustomer = null;
+                    }
                 }
                 else if (_Interact.CastForVictims(transform.position, out var customer))
                 {

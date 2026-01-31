@@ -56,12 +56,11 @@ public class CustomerController : MonoBehaviour, ICustomer, IInteractable
 
     private void Update()
     {
-        UpdateState();
-        _Animator.SetFloat("float_velocity", _Agent.velocity.magnitude);
         AlertImageParent.SetActive(AlertAmount > 0);
         AlertImageParent.transform.rotation = Quaternion.LookRotation(CameraController.Cam.transform.forward);
         AlertImageFill.fillAmount = AlertAmount;
-        
+        UpdateState();
+        _Animator.SetFloat("float_velocity", _Agent.velocity.magnitude);
     }
 
     private void ChangeState(AIState newState)
@@ -96,7 +95,8 @@ public class CustomerController : MonoBehaviour, ICustomer, IInteractable
                 break;            
             case AIState.Threatened:
                 // Debug.Log("Threatened");
-                AlertAmount = 0;
+                _Agent.SetDestination(transform.position);
+                AlertAmount = 1;
                 Timer = 0;
                 break;
         }
@@ -141,9 +141,11 @@ public class CustomerController : MonoBehaviour, ICustomer, IInteractable
                 if (AgentHasArrived())
                     Destroy(gameObject);
                 break;
-            case AIState.Threatened: 
+            case AIState.Threatened:
                 Timer += Time.deltaTime;
-                AlertAmount = Timer /  GiveMoneyTime;
+                // AlertAmount = Timer /  GiveMoneyTime;
+                AlertImageFill.fillAmount = Timer / GiveMoneyTime;
+                transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.LookRotation(PlayerController.Instance.transform.position - transform.position), Time.deltaTime * 8f);
                 // Debug.Log($"{Timer} / {GiveMoneyTime}");
                 if (Timer >= GiveMoneyTime)
                 {
