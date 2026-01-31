@@ -98,7 +98,8 @@ GameObject:
   - component: {fileID: 5993559269396924503}
   - component: {fileID: 8168710531522369111}
   - component: {fileID: 6360281603681504452}
-  m_Layer: 7
+  - component: {fileID: -4464232257368099433}
+  m_Layer: 8
   m_Name: '[CustomerController]'
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -133,13 +134,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f73d79ab0b90a924a879222002fa6cb4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  NormalSpeed: 0
-  FleeSpeed: 0
+  InteractionUIOffset: {x: 0, y: 60}
+  _IsInteractable: 0
+  NormalSpeed: 3
+  FleeSpeed: 6
   HasGottenFood: 0
   MaxWaitTime: 30
   AlertTime: 2
-  _LeaveQueueTime: 0
-  _AlertAmount: 0
+  _LeaveQueueTime: 30
+  _AlertAmount: 2
   CurrentState: 0
 --- !u!195 &6360281603681504452
 NavMeshAgent:
@@ -154,7 +157,7 @@ NavMeshAgent:
   m_Speed: 3.5
   m_Acceleration: 8
   avoidancePriority: 50
-  m_AngularSpeed: 120
+  m_AngularSpeed: 500
   m_StoppingDistance: 0
   m_AutoTraverseOffMeshLink: 1
   m_AutoBraking: 1
@@ -163,6 +166,29 @@ NavMeshAgent:
   m_BaseOffset: 0
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
+--- !u!136 &-4464232257368099433
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3794206352934158526}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.5
+  m_Height: 1
+  m_Direction: 1
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &8592215270991632159
 GameObject:
   m_ObjectHideFlags: 0

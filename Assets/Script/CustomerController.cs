@@ -3,8 +3,13 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class CustomerController : MonoBehaviour, ICustomer
+public class CustomerController : MonoBehaviour, ICustomer, IInteractable
 {
+    [Header("Interaction")]
+    public Vector2 InteractionUIOffset;
+    [SerializeField] private bool _IsInteractable;
+    
+    [Header("Other")]
     private NavMeshAgent _Agent;
     public float NormalSpeed;
     public float FleeSpeed;
@@ -25,7 +30,6 @@ public class CustomerController : MonoBehaviour, ICustomer
 
     private void Start()
     {
-        JoinQueue();
         ChangeState(AIState.Queuing);
         // _Agent.SetDestination(GameManager.ExitPosition);
         _Agent.speed = NormalSpeed;
@@ -68,7 +72,9 @@ public class CustomerController : MonoBehaviour, ICustomer
         {
             case AIState.Queuing:
                 if (GameManager.RegisterQueue.TryGetQueuePosition(this, out var pos))
+                {
                     _Agent.SetDestination(pos);
+                }
                 break;
             case AIState.Alert:
                 //Could multiply this with some value, like distance.
@@ -119,5 +125,28 @@ public class CustomerController : MonoBehaviour, ICustomer
     {
         _Agent.SetDestination(GameManager.ExitPosition);
     }
-    
+
+    private void OnDrawGizmosSelected()
+    {
+        Gizmos.color = Color.yellow;
+        Gizmos.DrawLine(transform.position + Vector3.up, _Agent.destination);
+
+    }
+
+    private void UpdateSight()
+    {
+        
+    }
+
+    public bool IsInteractable() => true;
+
+    public Vector2 GetOffset() => InteractionUIOffset;
+    public Vector3 GetPosition() => transform.position;
+
+    public void Interact()
+    {
+        Debug.Log("Interact with Customer", gameObject);
+        PlayerController.Instance.IsCarryingMeat = false;
+        PlayerController.Instance.IsCarryingBread = false;
+    }
 }

@@ -116,20 +116,22 @@ public class GameManager : MonoBehaviour
         float minTime = Random.Range(Instance.CustomerMinSpawnInterval.x, Instance.CustomerMinSpawnInterval.y);
         float maxTime = Random.Range(Instance.CustomerMaxSpawnInterval.x, Instance.CustomerMaxSpawnInterval.y);
         float value = Mathf.Lerp(minTime, maxTime, CurrentGameplayTime / Instance.TimeToMaxSpawn);
-        Debug.Log("Next Customer Spawn Time Duration " + value);
-        return value;
+        // Debug.Log("Next Customer Spawn Time Duration " + value);
+        return Time.time + value;
     }
 
     private static void SpawnCustomer()
     {
-        Instantiate(Instance.CustomerPrefab, ExitPosition, Quaternion.identity);
+        if (RegisterQueue.QueueList.Count < RegisterQueue.MaxLength)
+            Instantiate(Instance.CustomerPrefab, ExitPosition, Quaternion.LookRotation(Instance._ExitPositionTransform.forward));
+        NextCustomerSpawnTime = GetNextCustomerSpawnTime();
     }
     
     private static float GetNextPoliceSpawnTime()
     {
         float minTime = Random.Range(Instance.PoliceMinSpawnInterval.x, Instance.PoliceMinSpawnInterval.y);
         float maxTime = Random.Range(Instance.PoliceMaxSpawnInterval.x, Instance.PoliceMaxSpawnInterval.y);
-        return Mathf.Lerp(minTime, maxTime, CurrentGameplayTime / Instance.TimeToMaxSpawn);
+        return Time.time + Mathf.Lerp(minTime, maxTime, CurrentGameplayTime / Instance.TimeToMaxSpawn);
     }
     
     private static void SpawnPolice()

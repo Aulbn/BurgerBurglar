@@ -11,6 +11,8 @@ public class PlayerInputHandler : MonoBehaviour
     public bool IsSprinting;
     [HideInInspector] public UnityEvent OnMaskToggle;
     [HideInInspector] public UnityEvent OnInteract;
+    [HideInInspector] public bool InteractWasPerformedThisFrame;
+    [HideInInspector] public bool MaskWasPerformedThisFrame;
 
     void Awake()
     {
@@ -39,6 +41,12 @@ public class PlayerInputHandler : MonoBehaviour
         _Input.actions.FindAction("Mask").performed -= MaskToggle;
         _Input.actions.FindAction("Interact").performed -= Interact;
 
+    }
+
+    private void Update()
+    {
+        InteractWasPerformedThisFrame = _Input.actions.FindAction("Interact").WasPerformedThisFrame();
+        MaskWasPerformedThisFrame = _Input.actions.FindAction("Mask").WasPerformedThisFrame();
     }
 
     private void SetMovement(InputAction.CallbackContext context)

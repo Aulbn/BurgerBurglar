@@ -20,7 +20,7 @@ public class CameraController : MonoBehaviour
             Destroy(gameObject);
     }
 
-    private void Update()
+    private void LateUpdate()
     {
         transform.position = Vector3.Lerp(transform.position, TargetTransform.position, Time.deltaTime * FollowSpeed);
     }

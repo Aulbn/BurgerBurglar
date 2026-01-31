@@ -4,10 +4,12 @@ using UnityEngine;
 
 public class RegisterQueue : MonoBehaviour
 {
-    public float MaxLength = 10f;
+    public int MaxLength = 10;
     public float Distance = 1;
 
-    [SerializeField] private List<ICustomer> _QueueList = new List<ICustomer>(); 
+    [SerializeField] private List<ICustomer> _QueueList = new List<ICustomer>();
+    public List<ICustomer> QueueList => _QueueList;
+    
 
     public void AddCustomer(ICustomer customer)
     {
@@ -27,7 +29,7 @@ public class RegisterQueue : MonoBehaviour
         if (!_QueueList.Contains(customer))
             return false;
 
-        position = transform.position + transform.forward * Distance * _QueueList.IndexOf(customer);
+        position = transform.position + transform.forward * (Distance * _QueueList.IndexOf(customer));
         return true;
     }
     

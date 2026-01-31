@@ -47,6 +47,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _ExitPositionTransform: {fileID: 8750876049122750405}
   _RegisterQueue: {fileID: 0}
+  TimeToMaxSpawn: 90
+  CustomerPrefab: {fileID: 8168710531522369111, guid: 7a65d76130e7d1a4e95f6fb518e27a03, type: 3}
+  CustomerMinSpawnInterval: {x: 3, y: 5}
+  CustomerMaxSpawnInterval: {x: 3, y: 5}
+  PolicePrefab: {fileID: 0}
+  PoliceMinSpawnInterval: {x: 3, y: 5}
+  PoliceMaxSpawnInterval: {x: 0, y: 0}
 --- !u!1 &9157808982238592607
 GameObject:
   m_ObjectHideFlags: 0

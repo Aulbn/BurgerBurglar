@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.Serialization;
 
@@ -7,26 +8,29 @@ public class PlayerInteraction : MonoBehaviour
     public float RobDuration;
     public float RobDistance;
 
+    public LayerMask InteractableLayerMask;
+
     public bool CastForInteractables(Vector3 point, out IInteractable interactable)
     {
         interactable = default;
-        var colliders = Physics.OverlapSphere(point, _InteractionRadius);
+        var colliders = Physics.OverlapSphere(point, _InteractionRadius, InteractableLayerMask);
         if (colliders.Length == 0)
             return false;
-
-        var bestCollider = colliders[0];
-        var bestAngle = Vector3.Angle(transform.forward, (colliders[0].transform.position - transform.position).normalized);
-        foreach (var collider in colliders)
+        
+        float bestAngle = 360f;
+        foreach (var col in colliders)
         {
-            if (!collider.TryGetComponent<IInteractable>(out interactable))
-                return false;
+            if (!col.TryGetComponent<IInteractable>(out var currentInteractable))
+                continue;
+            if (currentInteractable.IsInteractable() == false)
+                continue;
             
             float angle = Vector3.Angle(transform.forward,
-                (collider.transform.position - transform.position).normalized);
-            
+                (col.transform.position - transform.position).normalized);
+
             if (angle < bestAngle)
             {
-                bestCollider = collider;
+                interactable = currentInteractable;
                 bestAngle = angle;
             }
         }
@@ -43,19 +47,18 @@ public class PlayerInteraction : MonoBehaviour
         if (colliders.Length == 0)
             return false;
 
-        var bestCollider = colliders[0];
-        var bestAngle = Vector3.Angle(transform.forward, (colliders[0].transform.position - transform.position).normalized);
-        foreach (var collider in colliders)
+        float bestAngle = 360f;
+        foreach (var col in colliders)
         {
-            if (!collider.TryGetComponent<ICustomer>(out customer))
-                return false;
+            if (!col.TryGetComponent<ICustomer>(out var currentCustomer))
+                continue;
             
             float angle = Vector3.Angle(transform.forward,
-                (collider.transform.position - transform.position).normalized);
-            
+                (col.transform.position - transform.position).normalized);
+
             if (angle < bestAngle)
             {
-                bestCollider = collider;
+                customer = currentCustomer;
                 bestAngle = angle;
             }
         }
@@ -66,34 +69,37 @@ public class PlayerInteraction : MonoBehaviour
         return true;
     }
     
-    public bool CastForHostages(Vector3 point, out HostageController hotsage)
+    public bool CastForHostages(Vector3 point, out HostageController hostage)
     {
-        hotsage = default;
+        hostage = default;
         var colliders = Physics.OverlapSphere(point, RobDistance);
         if (colliders.Length == 0)
             return false;
 
-        var bestCollider = colliders[0];
-        var bestAngle = Vector3.Angle(transform.forward, (colliders[0].transform.position - transform.position).normalized);
+        var bestAngle = 360f;
         foreach (var collider in colliders)
         {
-            if (!collider.TryGetComponent<HostageController>(out hotsage))
-                return false;
+            if (!collider.TryGetComponent<HostageController>(out var currentHostage))
+                continue;
             
             float angle = Vector3.Angle(transform.forward,
                 (collider.transform.position - transform.position).normalized);
             
             if (angle < bestAngle)
             {
-                bestCollider = collider;
+                hostage = currentHostage;
                 bestAngle = angle;
             }
         }
 
-        if (hotsage == null)
+        if (hostage == null)
             return false;
         
         return true;
     }
-    
+
+    private void OnDrawGizmos()
+    {
+        Gizmos.DrawWireSphere(transform.position, _InteractionRadius);
+    }
 }
