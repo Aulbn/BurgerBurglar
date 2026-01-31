@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.UI;
 
 public class PoliceController : MonoBehaviour, ICustomer
 {
@@ -23,11 +24,16 @@ public class PoliceController : MonoBehaviour, ICustomer
     
     [Header("Queueing")]
     [SerializeField] private float _LeaveQueueTime;
-    
-    [Header("Alert")]
+
+    [Header("Alert")] 
+    public float GunReactionSpeedMultiplier = 3f;
     [Range(0,1)] public float AlertAmount; 
+    public GameObject AlertImageParent;
+    public Image AlertImageFill;
 
     public AIState CurrentState;
+
+    public Animator _Animator;
     
     private int _EnteredStateFrame = 0;
     
@@ -44,7 +50,11 @@ public class PoliceController : MonoBehaviour, ICustomer
 
     private void Update()
     {
+        AlertImageParent.SetActive(AlertAmount > 0);
+        AlertImageParent.transform.rotation = Quaternion.LookRotation(CameraController.Cam.transform.forward);
+        AlertImageFill.fillAmount = AlertAmount;
         UpdateState();
+        _Animator.SetFloat("float_velocity", _Agent.velocity.magnitude);
     }
     
      private void ChangeState(AIState newState)
@@ -61,7 +71,9 @@ public class PoliceController : MonoBehaviour, ICustomer
             case AIState.Alert:
                 break;
             case AIState.Combat:
-                //TODO: MAKE THIS PRETTY!
+                //TODO: ADD VFX
+                _Animator.SetTrigger("trigger_shoot");
+                _Animator.SetBool("bool_aim", true);
                 GameManager.GameOver_Death();
                 break;
             case AIState.Fleeing:
@@ -146,7 +158,12 @@ public class PoliceController : MonoBehaviour, ICustomer
         //Could multiply the speed with some value, like distance, or if player holds gun.
         // Debug.Log(PlayerInSight(), gameObject);
         if (PlayerInSight() && PlayerController.Instance.HasMaskOn)
-            AlertAmount += Time.deltaTime / AlertTime;
+        {
+            float multiplier = 1;
+            if (PlayerController.Instance.GunMesh.activeSelf)
+                multiplier = GunReactionSpeedMultiplier;
+            AlertAmount += Time.deltaTime / AlertTime * multiplier;
+        }
         else
             AlertAmount -= Time.deltaTime / DealertTime;
 

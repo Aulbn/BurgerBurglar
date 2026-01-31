@@ -46,7 +46,7 @@ public class GameMenu : MonoBehaviour
     {
         Instance.GameOverPanel.SetActive(true);
         Instance.GameOverReasonText.text = reason;
-        Instance.GameOverMoneyText.text = money.ToString();
+        Instance.GameOverMoneyText.text = $"${money}";
     }
     
     public static void TogglePauseMenu()
