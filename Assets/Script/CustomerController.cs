@@ -10,9 +10,10 @@ public class CustomerController : MonoBehaviour, ICustomer, IInteractable
     [SerializeField] private bool _IsInteractable;
     
     [Header("Other")]
-    private NavMeshAgent _Agent;
     public float NormalSpeed;
     public float FleeSpeed;
+    
+    private NavMeshAgent _Agent;
 
     public bool HasGottenFood;
     public float MaxWaitTime = 30f;
@@ -27,7 +28,10 @@ public class CustomerController : MonoBehaviour, ICustomer, IInteractable
     [SerializeField] private float _LeaveQueueTime;
     
     [Header("Alert")]
-    [Range(0,1)] public float AlertAmount; 
+    [Range(0,1)] public float AlertAmount;
+
+    public float GiveMoneyTime;
+    public float Timer;
 
     public AIState CurrentState;
 
@@ -58,24 +62,31 @@ public class CustomerController : MonoBehaviour, ICustomer, IInteractable
         switch (newState)
         {
             case AIState.Queuing:
+                Debug.Log("Queuing");
                 _LeaveQueueTime = Time.time + MaxWaitTime;
                 JoinQueue();
                 break;
             case AIState.Alert:
+                Debug.Log("Alert");
                 break;
             case AIState.Combat:
+                Debug.Log("Combat");
                 break;
             case AIState.Fleeing:
+                Debug.Log("Fleeing");
                 LeaveQueue();
                 _Agent.speed = FleeSpeed;
                 _Agent.SetDestination(GameManager.ExitPosition);
                 break;
             case AIState.Leaving:
+                Debug.Log("Leaving");
                 LeaveQueue();
                 _Agent.speed = NormalSpeed;
                 _Agent.SetDestination(GameManager.ExitPosition);
                 break;            
-            case AIState.Threatened: 
+            case AIState.Threatened:
+                Debug.Log("Threatened");
+                Timer = 0;
                 break;
         }
     }
@@ -95,6 +106,10 @@ public class CustomerController : MonoBehaviour, ICustomer, IInteractable
                 UpdateAlert();
                 if (AlertAmount > 0)
                     ChangeState(AIState.Alert);
+                
+                if (Time.time > _LeaveQueueTime)
+                    ChangeState(AIState.Leaving);
+                
                 break;
             case AIState.Alert:
                 UpdateAlert();
@@ -114,6 +129,12 @@ public class CustomerController : MonoBehaviour, ICustomer, IInteractable
                     Destroy(gameObject);
                 break;
             case AIState.Threatened: 
+                Timer += Time.deltaTime;
+                if (Timer >= GiveMoneyTime)
+                {
+                    GameManager.AddStolenMoney();
+                    ChangeState(AIState.Fleeing);
+                }
                 break;
         }
     }
@@ -129,11 +150,14 @@ public class CustomerController : MonoBehaviour, ICustomer, IInteractable
             case AIState.Combat:
                 break;
             case AIState.Fleeing:
-                _Agent.speed = NormalSpeed;
+                if (_Agent != null)
+                    _Agent.speed = NormalSpeed;
                 break;
             case AIState.Leaving:
                 break;
-            case AIState.Threatened: 
+            case AIState.Threatened:
+                Debug.Log("Exit Threatened");
+                Timer = 0;
                 break;
         }
     }
@@ -199,10 +223,13 @@ public class CustomerController : MonoBehaviour, ICustomer, IInteractable
         GameManager.AddBurgerMoney();
     }
 
-    public Transform GetTransform() => transform;
+    public Transform GetTransform() => transform == null ? null : transform;
     public void OnThreaten()
     {
-        ChangeState(AIState.Threatened);
+        if (CurrentState != AIState.Fleeing && CurrentState != AIState.Threatened)
+        {
+            ChangeState(AIState.Threatened);
+        }
     }
     public void OnUnThreaten()
     {

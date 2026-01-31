@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class HostageGroupController : MonoBehaviour
 {
@@ -10,6 +11,8 @@ public class HostageGroupController : MonoBehaviour
     public float ScaredIncreaseTime;
     public float ScaredDecreaseTime;
     public float RangeOfView;
+    
+    public Image FillImage;
 
     [SerializeField] private List<HostageController> HostageList;
     [SerializeField] private Transform[] HostageSitPositions;
@@ -37,6 +40,8 @@ public class HostageGroupController : MonoBehaviour
             ReleaseHostage(); //Release a Hostage
             ScaredAmount = 1; //Reset scared amount
         }
+
+        FillImage.fillAmount = ScaredAmount;
     }
 
     private void ReleaseHostage()

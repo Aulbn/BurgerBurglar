@@ -7,7 +7,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: mat_black
+  m_Name: mat_skin
   m_Shader: {fileID: -6465566751694194690, guid: 47f7c26f34350f24aa65be8ae78d305b, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
@@ -122,7 +122,7 @@ Material:
     - _ZWrite: 1
     m_Colors:
     - _BaseColor: {r: 0, g: 0, b: 0, a: 1}
-    - _Base_Color: {r: 0.14150941, g: 0.14150941, b: 0.14150941, a: 1}
+    - _Base_Color: {r: 0.5188679, g: 0.44192463, b: 0.33041117, a: 1}
     - _Color: {r: 0, g: 0, b: 0, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _Shadow_Color: {r: 0.5071645, g: 0.6294937, b: 0.8207547, a: 1}

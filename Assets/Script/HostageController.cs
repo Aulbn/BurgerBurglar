@@ -9,6 +9,7 @@ public class HostageController : MonoBehaviour
     public float RunSpeed = 3;
     public float ScaredIncreaseTime;
 
+    public Animator _Animator;
     private NavMeshAgent _Agent;
     
     public enum HostageState
@@ -45,11 +46,18 @@ public class HostageController : MonoBehaviour
         switch (newState)
         {
             case HostageState.Idle:
+                Debug.Log("Idle");
+                _Animator.SetFloat("float_velocity", 0);
                 break;
             case HostageState.Escaping:
+                Debug.Log("Escaping");
+                ScaredAmount = 0;
+                _Animator.SetFloat("float_velocity", 1);
                 _Agent.SetDestination(GameManager.ExitPosition);
                 break;
             case HostageState.Returning:
+                Debug.Log("Returning");
+                _Animator.SetFloat("float_velocity", 1);
                 _Agent.SetDestination(HostageGroupController.GetSitPosition(this));
                 break;
         }
@@ -77,6 +85,10 @@ public class HostageController : MonoBehaviour
                 }
                 break;
             case HostageState.Returning:
+                if (AgentHasArrived())
+                {
+                    ChangeState(HostageState.Idle);
+                }
                 break;
         }
     }

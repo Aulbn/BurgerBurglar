@@ -81,6 +81,8 @@ public class PlayerInteraction : MonoBehaviour
         {
             if (!collider.TryGetComponent<HostageController>(out var currentHostage))
                 continue;
+            if (currentHostage.CurrentState != HostageController.HostageState.Escaping)
+                continue;
             
             float angle = Vector3.Angle(transform.forward,
                 (collider.transform.position - transform.position).normalized);

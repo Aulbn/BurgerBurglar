@@ -23,6 +23,8 @@ public class PlayerController : MonoBehaviour
 
     public float AlertSpeedMultiplier;
 
+    private ICustomer _ThreatenedCustomer;
+
     private CharacterController _Cc;
     private PlayerInputHandler _Input;
     private PlayerInteraction _Interact;
@@ -159,9 +161,17 @@ public class PlayerController : MonoBehaviour
                     _TargetRotation = Quaternion.LookRotation(customer.GetTransform().position - transform.position);
                     transform.rotation = Quaternion.Lerp(transform.rotation,_TargetRotation,Time.deltaTime * _RotationSpeed);
                     CameraController.Instance.SecondaryTargetTransform = customer.GetTransform();
+                    _ThreatenedCustomer = customer;
+                    _ThreatenedCustomer.OnThreaten();
                 }
                 else
                 {
+                    if (_ThreatenedCustomer != null && _ThreatenedCustomer.GetTransform() != null)
+                    {
+                        // Debug.Log("Unthreaten customer " + _ThreatenedCustomer, _ThreatenedCustomer.GetTransform().gameObject);
+                        _ThreatenedCustomer.OnUnThreaten();
+                        _ThreatenedCustomer = null;
+                    }
                     CameraController.Instance.SecondaryTargetTransform = null;
                 }
                 
@@ -179,6 +189,7 @@ public class PlayerController : MonoBehaviour
         {
             case PlayerState.Idle:
                 _Cc.Move(Vector3.zero);
+                HUD.HideInteractionPrompt();
                 break;
             case PlayerState.Cooking:
                 break;
