@@ -61,6 +61,8 @@ public class PoliceController : MonoBehaviour, ICustomer
             case AIState.Alert:
                 break;
             case AIState.Combat:
+                //TODO: MAKE THIS PRETTY!
+                GameManager.GameOver_Death();
                 break;
             case AIState.Fleeing:
                 LeaveQueue();

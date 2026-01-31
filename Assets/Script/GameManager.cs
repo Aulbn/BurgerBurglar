@@ -72,6 +72,7 @@ public class GameManager : MonoBehaviour
                 CurrentGameplayTime = 0;
                 Debug.Log("Gameplay", Instance.gameObject);
                 NextCustomerSpawnTime = GetNextCustomerSpawnTime();
+                NextPoliceSpawnTime = GetNextPoliceSpawnTime();
                 break;
             case GameState.Paused:
                 Debug.Log("Paused", Instance.gameObject);
@@ -93,6 +94,8 @@ public class GameManager : MonoBehaviour
                 CurrentGameplayTime += Time.deltaTime;
                 if (Time.time >= NextCustomerSpawnTime)
                     SpawnCustomer();
+                if (Time.time >= NextPoliceSpawnTime)
+                    SpawnPolice();
                 break;
             case GameState.Paused:
                 break;
@@ -177,7 +180,9 @@ public class GameManager : MonoBehaviour
     
     private static void SpawnPolice()
     {
-        
+        if (RegisterQueue.QueueList.Count < RegisterQueue.MaxLength)
+            Instantiate(Instance.PolicePrefab, ExitPosition, Quaternion.LookRotation(Instance._ExitPositionTransform.forward));
+        NextPoliceSpawnTime = GetNextPoliceSpawnTime();
     }
     
     
