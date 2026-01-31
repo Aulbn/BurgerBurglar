@@ -97,6 +97,7 @@ public class PlayerController : MonoBehaviour
         switch (newState)
         {
             case PlayerState.Idle:
+                GunMesh.SetActive(false);
                 break;
             case PlayerState.Cooking:
                 break;
@@ -129,6 +130,9 @@ public class PlayerController : MonoBehaviour
                 {
                     HUD.HideInteractionPrompt();
                 }
+                
+                if (HasMaskOn && _Input.IsHoldingAim)
+                    ChangeState(PlayerState.Robbing);
 
                 if (_Input.MaskWasPerformedThisFrame)
                     ToggleMask();
@@ -142,6 +146,11 @@ public class PlayerController : MonoBehaviour
                 {
                     _TargetRotation = Quaternion.LookRotation(customer.GetTransform().position - transform.position);
                     transform.rotation = Quaternion.Lerp(transform.rotation,_TargetRotation,Time.deltaTime * _RotationSpeed);
+                    CameraController.Instance.SecondaryTargetTransform = customer.GetTransform();
+                }
+                else
+                {
+                    CameraController.Instance.SecondaryTargetTransform = null;
                 }
                 
                 if (!_Input.IsHoldingAim)
@@ -161,6 +170,7 @@ public class PlayerController : MonoBehaviour
             case PlayerState.Cooking:
                 break;
             case PlayerState.Robbing:
+                CameraController.Instance.SecondaryTargetTransform = null;
                 GunMesh.SetActive(false);
                 break;
             case PlayerState.Dead:

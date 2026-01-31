@@ -199,6 +199,14 @@ public class CustomerController : MonoBehaviour, ICustomer, IInteractable
     }
 
     public Transform GetTransform() => transform;
+    public void OnThreaten()
+    {
+        ChangeState(AIState.Threatened);
+    }
+    public void OnUnThreaten()
+    {
+        ChangeState(AIState.Fleeing);
+    }
 
 
     private void OnDrawGizmos()

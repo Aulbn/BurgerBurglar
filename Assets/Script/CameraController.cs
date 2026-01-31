@@ -9,6 +9,7 @@ public class CameraController : MonoBehaviour
     public static Camera Cam => Instance._Cam;
     
     public Transform TargetTransform;
+    public Transform SecondaryTargetTransform;
     
     public float FollowSpeed = 10f;
     
@@ -22,6 +23,9 @@ public class CameraController : MonoBehaviour
 
     private void LateUpdate()
     {
-        transform.position = Vector3.Lerp(transform.position, TargetTransform.position, Time.deltaTime * FollowSpeed);
+        Vector3 targetPos = TargetTransform.position;
+        if (SecondaryTargetTransform != null)
+            targetPos = (Vector3.Lerp(targetPos, SecondaryTargetTransform.position, 0.5f));
+        transform.position = Vector3.Lerp(transform.position, targetPos, Time.deltaTime * FollowSpeed);
     }
 }
