@@ -196,6 +196,7 @@ public class CustomerController : MonoBehaviour, ICustomer, IInteractable
         ChangeState(AIState.Leaving);
         PlayerController.Instance.IsCarryingMeat = false;
         PlayerController.Instance.IsCarryingBread = false;
+        GameManager.AddBurgerMoney();
     }
 
     public Transform GetTransform() => transform;

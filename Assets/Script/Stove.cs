@@ -7,8 +7,14 @@ public class Stove : MonoBehaviour, IInteractable
     public Vector2 InteractionUIOffset;
     [SerializeField] private bool _IsInteractable;
     [Header("Stove")]
-    public GameObject BeefVisuals;
+    public GameObject RawBeefVisuals;
+    public GameObject CookedBeefVisuals;
     public GameObject BurntBeefVisuals;
+    
+    [Header("Particle System")]
+    public ParticleSystem FrySmokeParicles;
+    public Color GoodSmokeColor;
+    public Color BurntSmokeColor;
     
     public enum StoveState
     {
@@ -28,6 +34,7 @@ public class Stove : MonoBehaviour, IInteractable
     private void Start()
     {
         ChangeState(StoveState.Idle);
+        FrySmokeParicles.Stop();
     }
 
     private void Update()
@@ -35,6 +42,12 @@ public class Stove : MonoBehaviour, IInteractable
         UpdateState();
     }
 
+    private void SetSmokeColor(Color color)
+    {
+        var main = FrySmokeParicles.main;
+        main.startColor = new ParticleSystem.MinMaxGradient(color);
+    }
+    
     private void ChangeState(StoveState newState)
     {
         ExitState();
@@ -42,22 +55,29 @@ public class Stove : MonoBehaviour, IInteractable
         switch (newState)
         {
             case StoveState.Idle:
+                FrySmokeParicles.Stop();
                 _IsInteractable = true;
-                BeefVisuals.SetActive(false);
+                RawBeefVisuals.SetActive(false);
+                CookedBeefVisuals.SetActive(false);
                 BurntBeefVisuals.SetActive(false);
                 break;
             case StoveState.Cooking:
-                BeefVisuals.SetActive(true);
+                FrySmokeParicles.Play();
+                SetSmokeColor(GoodSmokeColor);
+                RawBeefVisuals.SetActive(true);
                 _IsInteractable = false;
                 _Timer = 0;
                 break;
             case StoveState.Burning:
+                SetSmokeColor(BurntSmokeColor);
                 _IsInteractable = false;
                 _Timer = 0;
                 break;
             case StoveState.Burnt:
+                FrySmokeParicles.Stop();
                 _IsInteractable = true;
-                BeefVisuals.SetActive(false);
+                RawBeefVisuals.SetActive(false);
+                CookedBeefVisuals.SetActive(false);
                 BurntBeefVisuals.SetActive(true);
                 _Timer = 0;
                 break;
@@ -71,11 +91,12 @@ public class Stove : MonoBehaviour, IInteractable
             case StoveState.Idle:
                 break;
             case StoveState.Cooking:
-                BeefVisuals.SetActive(true);
                 _Timer += Time.deltaTime;
                 if (_Timer >= CookTime)
                 {
                     //Change look
+                    RawBeefVisuals.SetActive(false);
+                    CookedBeefVisuals.SetActive(true);
                     _IsInteractable = true;
                 }
                 if (_Timer >= CookTime + BeforeBurningTime)
