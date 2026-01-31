@@ -1,11 +1,41 @@
+using System;
 using UnityEngine;
+using UnityEngine.Serialization;
+using Random = UnityEngine.Random;
 
 public class GameManager : MonoBehaviour
 {
     public static GameManager Instance;
 
-    [SerializeField] private Transform _CustomerSpawnTransform;
-    public static Vector3 CustomerSpawnPosition =>  Instance._CustomerSpawnTransform.position;
+    [SerializeField] private Transform _ExitPositionTransform;
+    public static Vector3 ExitPosition =>  Instance._ExitPositionTransform.position;
+    
+    [SerializeField] private RegisterQueue _RegisterQueue;
+    public static RegisterQueue RegisterQueue => Instance._RegisterQueue;
+
+    public static float CurrentGameplayTime = 0f;
+
+    [Header("Customer Spawning")]
+    public float TimeToMaxSpawn = 90f;
+    public CustomerController CustomerPrefab;
+    public Vector2 CustomerMinSpawnInterval;
+    public Vector2 CustomerMaxSpawnInterval;
+    private static float NextCustomerSpawnTime;
+    
+    public PoliceController PolicePrefab;
+    public Vector2 PoliceMinSpawnInterval;
+    public Vector2 PoliceMaxSpawnInterval;
+    private static float NextPoliceSpawnTime;
+
+    public enum GameState
+    {
+        None,
+        Paused,
+        MainMenu,
+        Gameplay,
+        GameOver,
+    }
+    public static GameState CurrentState { get; private set; }
 
     void Awake()
     {
@@ -14,4 +44,98 @@ public class GameManager : MonoBehaviour
         else
             Destroy(gameObject);
     }
+
+    private void Start()
+    {
+        ChangeState(GameState.Gameplay);
+    }
+
+    private void Update()
+    {
+        UpdateState();
+    }
+
+    public static void ChangeState(GameState newState)
+    {
+        Instance.ExitState();
+        CurrentState = newState;
+        switch (newState)
+        {
+            case GameState.Gameplay:
+                CurrentGameplayTime = 0;
+                Debug.Log("Gameplay", Instance.gameObject);
+                NextCustomerSpawnTime = GetNextCustomerSpawnTime();
+                break;
+            case GameState.Paused:
+                Debug.Log("Paused", Instance.gameObject);
+                break;
+            case GameState.MainMenu:
+                Debug.Log("Main Menu", Instance.gameObject);
+                break;
+            case GameState.GameOver:
+                Debug.Log("GAME OVER", Instance.gameObject);
+                break;
+        }
+    }
+
+    private void UpdateState()
+    {
+        switch (CurrentState)
+        {
+            case GameState.Gameplay:
+                CurrentGameplayTime += Time.deltaTime;
+                if (Time.time >= NextCustomerSpawnTime)
+                    SpawnCustomer();
+                break;
+            case GameState.Paused:
+                break;
+            case GameState.MainMenu:
+                break;
+            case GameState.GameOver:
+                break;
+        }
+    }
+    
+    private void ExitState()
+    {
+        switch (CurrentState)
+        {
+            case GameState.Gameplay:
+                break;
+            case GameState.Paused:
+                break;
+            case GameState.MainMenu:
+                break;
+            case GameState.GameOver:
+                break;
+        }
+    }
+
+    private static float GetNextCustomerSpawnTime()
+    {
+        float minTime = Random.Range(Instance.CustomerMinSpawnInterval.x, Instance.CustomerMinSpawnInterval.y);
+        float maxTime = Random.Range(Instance.CustomerMaxSpawnInterval.x, Instance.CustomerMaxSpawnInterval.y);
+        float value = Mathf.Lerp(minTime, maxTime, CurrentGameplayTime / Instance.TimeToMaxSpawn);
+        Debug.Log("Next Customer Spawn Time Duration " + value);
+        return value;
+    }
+
+    private static void SpawnCustomer()
+    {
+        Instantiate(Instance.CustomerPrefab, ExitPosition, Quaternion.identity);
+    }
+    
+    private static float GetNextPoliceSpawnTime()
+    {
+        float minTime = Random.Range(Instance.PoliceMinSpawnInterval.x, Instance.PoliceMinSpawnInterval.y);
+        float maxTime = Random.Range(Instance.PoliceMaxSpawnInterval.x, Instance.PoliceMaxSpawnInterval.y);
+        return Mathf.Lerp(minTime, maxTime, CurrentGameplayTime / Instance.TimeToMaxSpawn);
+    }
+    
+    private static void SpawnPolice()
+    {
+        
+    }
+    
+    
 }
