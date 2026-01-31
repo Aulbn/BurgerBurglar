@@ -34,8 +34,20 @@ public class HostageGroupController : MonoBehaviour
 
         if (ScaredAmount == 0)
         {
-            HostageList[0].Release(); //Release a Hostage
+            ReleaseHostage(); //Release a Hostage
             ScaredAmount = 1; //Reset scared amount
+        }
+    }
+
+    private void ReleaseHostage()
+    {
+        foreach (var hostage in HostageList)
+        {
+            if (hostage.CurrentState == HostageController.HostageState.Idle)
+            {
+                hostage.Release();
+                break;
+            }
         }
     }
 
@@ -76,7 +88,7 @@ public class HostageGroupController : MonoBehaviour
         Ray ray = new Ray(origin, (PlayerController.Instance.transform.position + Vector3.up - origin).normalized);
         if (Physics.Raycast(ray, out var hit, RangeOfView))
         {
-            Debug.Log("PlayerInView HIT: " + hit.collider.gameObject.name);
+            // Debug.Log("PlayerInView HIT: " + hit.collider.gameObject.name);
             if (hit.collider.gameObject == PlayerController.Instance.gameObject)
             {        
                 Debug.DrawRay(ray.origin, ray.direction * RangeOfView, Color.green);

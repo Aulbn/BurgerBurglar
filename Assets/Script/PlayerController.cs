@@ -16,6 +16,7 @@ public class PlayerController : MonoBehaviour
 
     public GameObject GunMesh;
     public GameObject MaskMesh;
+    public GameObject CapMesh;
     public bool HasMaskOn;
     public bool IsCarryingMeat;
     public bool IsCarryingBread;
@@ -25,6 +26,7 @@ public class PlayerController : MonoBehaviour
     private CharacterController _Cc;
     private PlayerInputHandler _Input;
     private PlayerInteraction _Interact;
+    private PlayerAnimationController _Animation;
 
     public enum PlayerState
     {
@@ -47,6 +49,7 @@ public class PlayerController : MonoBehaviour
         _Cc = GetComponent<CharacterController>();
         _Input = GetComponent<PlayerInputHandler>();
         _Interact = GetComponent<PlayerInteraction>();
+        _Animation = GetComponent<PlayerAnimationController>();
     }
 
     private void Start()
@@ -59,18 +62,8 @@ public class PlayerController : MonoBehaviour
 
     private void Update()
     {
-        
-        //Robbing
-        // if (HasMaskOn)
-        // {
-        //     if (_Interact.CastForVictims(transform.position, out var victim))
-        //     {
-        //         //Show prompt
-        //         //Check for input
-        //     }
-        // }
-        
         UpdateState();
+        _Animation.SetVelocity(_Cc.velocity.magnitude);
     }
 
     private void ToggleMask() => ToggleMask(!HasMaskOn);
@@ -78,7 +71,12 @@ public class PlayerController : MonoBehaviour
     {
         HasMaskOn = maskIsOn;
         
+        if (HasMaskOn)
+            _Animation.Trigger_Mask();
+        else
+            _Animation.Trigger_Cap();
         MaskMesh.SetActive(HasMaskOn);
+        CapMesh.SetActive(!HasMaskOn);
         DropBurger();
     }
     
@@ -103,8 +101,11 @@ public class PlayerController : MonoBehaviour
                 break;
             case PlayerState.Robbing:
                 GunMesh.SetActive(true);
+                _Animation.ToggleAim(true);
+                DropBurger();
                 break;
             case PlayerState.Dead:
+                DropBurger();
                 break;
         }
     }
@@ -144,8 +145,16 @@ public class PlayerController : MonoBehaviour
             case PlayerState.Cooking:
                 break;
             case PlayerState.Robbing:
+                _Cc.Move(Vector3.zero);
                 AlertSpeedMultiplier = 3;
-                if (_Interact.CastForVictims(transform.position, out var customer))
+                if (_Interact.CastForHostages(transform.position, out var hostage))
+                {
+                    _TargetRotation = Quaternion.LookRotation(hostage.transform.position - transform.position);
+                    transform.rotation = Quaternion.Lerp(transform.rotation,_TargetRotation,Time.deltaTime * _RotationSpeed);
+                    CameraController.Instance.SecondaryTargetTransform = hostage.transform;
+                    hostage.IncreaseScared();
+                }
+                else if (_Interact.CastForVictims(transform.position, out var customer))
                 {
                     _TargetRotation = Quaternion.LookRotation(customer.GetTransform().position - transform.position);
                     transform.rotation = Quaternion.Lerp(transform.rotation,_TargetRotation,Time.deltaTime * _RotationSpeed);
@@ -169,12 +178,14 @@ public class PlayerController : MonoBehaviour
         switch (_CurrentState)
         {
             case PlayerState.Idle:
+                _Cc.Move(Vector3.zero);
                 break;
             case PlayerState.Cooking:
                 break;
             case PlayerState.Robbing:
                 CameraController.Instance.SecondaryTargetTransform = null;
                 GunMesh.SetActive(false);
+                _Animation.ToggleAim(false);
                 break;
             case PlayerState.Dead:
                 break;

@@ -1,17 +1,13 @@
 using System;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.Serialization;
 
 public class HostageController : MonoBehaviour
 {
-    [Range(0,1)]public float AlertAmount;
     [Range(0,1)]public float ScaredAmount;
     public float RunSpeed = 3;
-    public float RangeOfView;
-    public float AlertTime;
-    public float DealertTime;
     public float ScaredIncreaseTime;
-    public float ScaredDecreaseTime;
 
     private NavMeshAgent _Agent;
     
@@ -33,6 +29,11 @@ public class HostageController : MonoBehaviour
     private void Start()
     {
         _Agent.speed = RunSpeed;
+    }
+
+    private void Update()
+    {
+        UpdateState();
     }
 
     private void ChangeState(HostageState newState)
@@ -68,6 +69,11 @@ public class HostageController : MonoBehaviour
                 {
                     HostageGroupController.RemoveHostage(this);
                     Destroy(gameObject);
+                }
+                
+                if (ScaredAmount >= 1)
+                {
+                    ChangeState(HostageState.Returning);
                 }
                 break;
             case HostageState.Returning:
@@ -105,13 +111,5 @@ public class HostageController : MonoBehaviour
         float dist = _Agent.remainingDistance;
         return !float.IsPositiveInfinity(dist) && _Agent.pathStatus == NavMeshPathStatus.PathComplete &&
                _Agent.remainingDistance == 0;
-    }
-    
-    private bool PlayerInRange()
-    {
-        if (Vector3.Distance(transform.position, PlayerController.Instance.transform.position) > RangeOfView)
-            return false;
-        
-        return true;
     }
 }

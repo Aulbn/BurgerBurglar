@@ -179,14 +179,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 75a2fae176c26554b850263933a4181e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  AlertAmount: 0
   ScaredAmount: 0
   RunSpeed: 3
-  RangeOfView: 0
-  AlertTime: 0
-  DealertTime: 0
-  ScaredIncreaseTime: 0
-  ScaredDecreaseTime: 0
+  ScaredIncreaseTime: 2
   CurrentState: 0
 --- !u!1 &8462189457052701784
 GameObject:

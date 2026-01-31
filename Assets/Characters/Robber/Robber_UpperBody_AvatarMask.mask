@@ -1,0 +1,69 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!319 &31900000
+AvatarMask:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Robber_UpperBody_AvatarMask
+  m_Mask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+  m_Elements:
+  - m_Path: 
+    m_Weight: 1
+  - m_Path: BeadEyes_GEO
+    m_Weight: 0
+  - m_Path: Body_GEO
+    m_Weight: 0
+  - m_Path: Eyebrows_GEO
+    m_Weight: 0
+  - m_Path: Guy_Rig
+    m_Weight: 0
+  - m_Path: Guy_Rig/Root
+    m_Weight: 0
+  - m_Path: Guy_Rig/Root/Left_Foot
+    m_Weight: 0
+  - m_Path: Guy_Rig/Root/Pelvis
+    m_Weight: 0
+  - m_Path: Guy_Rig/Root/Pelvis/Chest
+    m_Weight: 1
+  - m_Path: Guy_Rig/Root/Pelvis/Chest/Head
+    m_Weight: 1
+  - m_Path: Guy_Rig/Root/Pelvis/Chest/Head/TopHead
+    m_Weight: 1
+  - m_Path: Guy_Rig/Root/Pelvis/Chest/Head/TopHead/BeadEyes
+    m_Weight: 1
+  - m_Path: Guy_Rig/Root/Pelvis/Chest/Head/TopHead/Eyebrows
+    m_Weight: 1
+  - m_Path: Guy_Rig/Root/Pelvis/Chest/Head/TopHead/OpenEyes
+    m_Weight: 1
+  - m_Path: Guy_Rig/Root/Pelvis/Chest/Left_Collar
+    m_Weight: 1
+  - m_Path: Guy_Rig/Root/Pelvis/Chest/Left_Collar/Left_Shoulder
+    m_Weight: 1
+  - m_Path: Guy_Rig/Root/Pelvis/Chest/Left_Collar/Left_Shoulder/Left_Elbow
+    m_Weight: 1
+  - m_Path: Guy_Rig/Root/Pelvis/Chest/Left_Collar/Left_Shoulder/Left_Elbow/Left_Wrist
+    m_Weight: 1
+  - m_Path: Guy_Rig/Root/Pelvis/Chest/Right_Collar
+    m_Weight: 1
+  - m_Path: Guy_Rig/Root/Pelvis/Chest/Right_Collar/Right_Shoulder
+    m_Weight: 1
+  - m_Path: Guy_Rig/Root/Pelvis/Chest/Right_Collar/Right_Shoulder/Right_Elbow
+    m_Weight: 1
+  - m_Path: Guy_Rig/Root/Pelvis/Chest/Right_Collar/Right_Shoulder/Right_Elbow/Right_Wrist
+    m_Weight: 1
+  - m_Path: Guy_Rig/Root/Pelvis/Chest/Right_Collar/Right_Shoulder/Right_Elbow/Right_Wrist/Weapon01
+    m_Weight: 1
+  - m_Path: Guy_Rig/Root/Pelvis/Left_Hip
+    m_Weight: 0
+  - m_Path: Guy_Rig/Root/Pelvis/Left_Hip/Left_Knee
+    m_Weight: 0
+  - m_Path: Guy_Rig/Root/Pelvis/Right_Hip
+    m_Weight: 0
+  - m_Path: Guy_Rig/Root/Pelvis/Right_Hip/Right_Knee
+    m_Weight: 0
+  - m_Path: Guy_Rig/Root/Right_Foot
+    m_Weight: 0
+  - m_Path: OpenEyes_GEO
+    m_Weight: 0
