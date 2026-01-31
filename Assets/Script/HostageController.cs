@@ -1,16 +1,20 @@
+using System;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class HostageController : MonoBehaviour
 {
     [Range(0,1)]public float AlertAmount;
     [Range(0,1)]public float ScaredAmount;
-
+    public float RunSpeed = 3;
     public float RangeOfView;
     public float AlertTime;
     public float DealertTime;
     public float ScaredIncreaseTime;
     public float ScaredDecreaseTime;
 
+    private NavMeshAgent _Agent;
+    
     public enum HostageState
     {
         Idle,
@@ -20,7 +24,17 @@ public class HostageController : MonoBehaviour
 
     public HostageState CurrentState;
     private int _EnteredStateFrame;
-    
+
+    private void Awake()
+    {
+        _Agent = GetComponent<NavMeshAgent>();
+    }
+
+    private void Start()
+    {
+        _Agent.speed = RunSpeed;
+    }
+
     private void ChangeState(HostageState newState)
     {
         _EnteredStateFrame = Time.frameCount;
@@ -32,8 +46,10 @@ public class HostageController : MonoBehaviour
             case HostageState.Idle:
                 break;
             case HostageState.Escaping:
+                _Agent.SetDestination(GameManager.ExitPosition);
                 break;
             case HostageState.Returning:
+                _Agent.SetDestination(HostageGroupController.GetSitPosition(this));
                 break;
         }
     }
@@ -48,6 +64,11 @@ public class HostageController : MonoBehaviour
             case HostageState.Idle:
                 break;
             case HostageState.Escaping:
+                if (AgentHasArrived())
+                {
+                    HostageGroupController.RemoveHostage(this);
+                    Destroy(gameObject);
+                }
                 break;
             case HostageState.Returning:
                 break;
@@ -66,30 +87,27 @@ public class HostageController : MonoBehaviour
                 break;
         }
     }
-    
-    private void UpdateAlert()
-    {
-        //Could multiply the speed with some value, like distance, or if player holds gun.
-        // Debug.Log(PlayerInSight(), gameObject);
-        if (PlayerInSight() && PlayerController.Instance.HasMaskOn)
-            AlertAmount += Time.deltaTime / AlertTime * PlayerController.Instance.AlertSpeedMultiplier;
-        else
-            AlertAmount -= Time.deltaTime / DealertTime * PlayerController.Instance.AlertSpeedMultiplier;
 
-        AlertAmount = Mathf.Clamp01(AlertAmount);
+    public void Release()
+    {
+        ChangeState(HostageState.Escaping);
     }
     
-    private void UpdateScared()
+    public void IncreaseScared()
     {
-        if (PlayerInSight() && PlayerController.Instance.HasMaskOn)
-            ScaredAmount += Time.deltaTime / ScaredIncreaseTime * PlayerController.Instance.AlertSpeedMultiplier;
-        else
-            ScaredAmount -= Time.deltaTime / ScaredDecreaseTime * PlayerController.Instance.AlertSpeedMultiplier;
-
+        //Controlled from player
+        ScaredAmount += Time.deltaTime / ScaredIncreaseTime;
         ScaredAmount = Mathf.Clamp01(ScaredAmount);
     }
     
-    private bool PlayerInSight()
+    private bool AgentHasArrived()
+    {
+        float dist = _Agent.remainingDistance;
+        return !float.IsPositiveInfinity(dist) && _Agent.pathStatus == NavMeshPathStatus.PathComplete &&
+               _Agent.remainingDistance == 0;
+    }
+    
+    private bool PlayerInRange()
     {
         if (Vector3.Distance(transform.position, PlayerController.Instance.transform.position) > RangeOfView)
             return false;

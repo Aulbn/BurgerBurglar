@@ -122,6 +122,11 @@ public class GameManager : MonoBehaviour
     {
         Instance.SetMoney(Instance._CurrentMoney + Random.Range(Instance.MoneyStealRange.x, Instance.MoneyStealRange.y));
     }
+
+    public static void GameOver_HostagesEscaped()
+    {
+        
+    }
     
     public static void AddBurgerMoney()
     {

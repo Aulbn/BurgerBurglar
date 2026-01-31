@@ -20,7 +20,7 @@ public class PlayerController : MonoBehaviour
     public bool IsCarryingMeat;
     public bool IsCarryingBread;
 
-    public float AlertSpeedMultiplier; //1 if jogging, 2 if running
+    public float AlertSpeedMultiplier;
 
     private CharacterController _Cc;
     private PlayerInputHandler _Input;
@@ -131,6 +131,8 @@ public class PlayerController : MonoBehaviour
                     HUD.HideInteractionPrompt();
                 }
                 
+                AlertSpeedMultiplier = _Input.IsSprinting ? 2 : 1;
+                
                 if (HasMaskOn && _Input.IsHoldingAim)
                     ChangeState(PlayerState.Robbing);
 
@@ -142,6 +144,7 @@ public class PlayerController : MonoBehaviour
             case PlayerState.Cooking:
                 break;
             case PlayerState.Robbing:
+                AlertSpeedMultiplier = 3;
                 if (_Interact.CastForVictims(transform.position, out var customer))
                 {
                     _TargetRotation = Quaternion.LookRotation(customer.GetTransform().position - transform.position);
