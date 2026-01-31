@@ -20,7 +20,8 @@ public class RegisterQueue : MonoBehaviour
     
     public void RemoveCustomer(ICustomer customer)
     {
-        _QueueList.Remove(customer);
+        if (_QueueList.Contains(customer))
+            _QueueList.Remove(customer);
     }
 
     public bool TryGetQueuePosition(ICustomer customer, out Vector3 position)

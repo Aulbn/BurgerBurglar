@@ -116,7 +116,7 @@ public class GameManager : MonoBehaviour
         float minTime = Random.Range(Instance.CustomerMinSpawnInterval.x, Instance.CustomerMinSpawnInterval.y);
         float maxTime = Random.Range(Instance.CustomerMaxSpawnInterval.x, Instance.CustomerMaxSpawnInterval.y);
         float value = Mathf.Lerp(minTime, maxTime, CurrentGameplayTime / Instance.TimeToMaxSpawn);
-        // Debug.Log("Next Customer Spawn Time Duration " + value);
+        Debug.Log("Next Customer Spawn Time Duration " + value);
         return Time.time + value;
     }
 

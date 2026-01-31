@@ -430,7 +430,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 52cbc0928bb060c4981976e4e586142c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _InteractionRadius: 1.5
+  _InteractionRadius: 2.2
   RobDuration: 3
   RobDistance: 2
   InteractableLayerMask:

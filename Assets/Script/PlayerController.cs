@@ -14,6 +14,7 @@ public class PlayerController : MonoBehaviour
 
     private Quaternion _TargetRotation;
 
+    public GameObject GunMesh;
     public GameObject MaskMesh;
     public bool HasMaskOn;
     public bool IsCarryingMeat;
@@ -100,6 +101,7 @@ public class PlayerController : MonoBehaviour
             case PlayerState.Cooking:
                 break;
             case PlayerState.Robbing:
+                GunMesh.SetActive(true);
                 break;
             case PlayerState.Dead:
                 break;
@@ -136,6 +138,14 @@ public class PlayerController : MonoBehaviour
             case PlayerState.Cooking:
                 break;
             case PlayerState.Robbing:
+                if (_Interact.CastForVictims(transform.position, out var customer))
+                {
+                    _TargetRotation = Quaternion.LookRotation(customer.GetTransform().position - transform.position);
+                    transform.rotation = Quaternion.Lerp(transform.rotation,_TargetRotation,Time.deltaTime * _RotationSpeed);
+                }
+                
+                if (!_Input.IsHoldingAim)
+                    ChangeState(PlayerState.Idle);
                 break;
             case PlayerState.Dead:
                 break;
@@ -151,6 +161,7 @@ public class PlayerController : MonoBehaviour
             case PlayerState.Cooking:
                 break;
             case PlayerState.Robbing:
+                GunMesh.SetActive(false);
                 break;
             case PlayerState.Dead:
                 break;
