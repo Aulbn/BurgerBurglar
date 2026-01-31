@@ -12,6 +12,7 @@ public class Stove : MonoBehaviour, IInteractable
     public GameObject BurntBeefVisuals;
     
     [Header("Particle System")]
+    public ParticleSystem FireParicles;
     public ParticleSystem FrySmokeParicles;
     public Color GoodSmokeColor;
     public Color BurntSmokeColor;
@@ -35,6 +36,7 @@ public class Stove : MonoBehaviour, IInteractable
     {
         ChangeState(StoveState.Idle);
         FrySmokeParicles.Stop();
+        FireParicles.Stop();
     }
 
     private void Update()
@@ -69,12 +71,14 @@ public class Stove : MonoBehaviour, IInteractable
                 _Timer = 0;
                 break;
             case StoveState.Burning:
+                FireParicles.Play();
                 SetSmokeColor(BurntSmokeColor);
                 _IsInteractable = false;
                 _Timer = 0;
                 break;
             case StoveState.Burnt:
                 FrySmokeParicles.Stop();
+                FireParicles.Stop();
                 _IsInteractable = true;
                 RawBeefVisuals.SetActive(false);
                 CookedBeefVisuals.SetActive(false);
