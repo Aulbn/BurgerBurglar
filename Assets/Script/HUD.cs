@@ -1,4 +1,5 @@
 using System;
+using TMPro;
 using UnityEngine;
 
 public class HUD : MonoBehaviour
@@ -6,6 +7,7 @@ public class HUD : MonoBehaviour
     public static HUD Instance;
     
     public RectTransform InteractionPrompt;
+    public TextMeshProUGUI MoneyText;
 
     private void Awake()
     {
@@ -18,6 +20,11 @@ public class HUD : MonoBehaviour
     private void Start()
     {
         HideInteractionPrompt();
+    }
+
+    public static void SetMoneyText(float money)
+    {
+        Instance.MoneyText.text = $"${money}";
     }
 
     public static void SetInteractionPrompt(Vector3 worldPos, Vector2 offset)

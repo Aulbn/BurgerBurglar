@@ -14,6 +14,7 @@ public class PlayerController : MonoBehaviour
 
     private Quaternion _TargetRotation;
 
+    public GameObject GunMesh;
     public GameObject MaskMesh;
     public bool HasMaskOn;
     public bool IsCarryingMeat;
@@ -96,10 +97,12 @@ public class PlayerController : MonoBehaviour
         switch (newState)
         {
             case PlayerState.Idle:
+                GunMesh.SetActive(false);
                 break;
             case PlayerState.Cooking:
                 break;
             case PlayerState.Robbing:
+                GunMesh.SetActive(true);
                 break;
             case PlayerState.Dead:
                 break;
@@ -127,6 +130,9 @@ public class PlayerController : MonoBehaviour
                 {
                     HUD.HideInteractionPrompt();
                 }
+                
+                if (HasMaskOn && _Input.IsHoldingAim)
+                    ChangeState(PlayerState.Robbing);
 
                 if (_Input.MaskWasPerformedThisFrame)
                     ToggleMask();
@@ -136,6 +142,19 @@ public class PlayerController : MonoBehaviour
             case PlayerState.Cooking:
                 break;
             case PlayerState.Robbing:
+                if (_Interact.CastForVictims(transform.position, out var customer))
+                {
+                    _TargetRotation = Quaternion.LookRotation(customer.GetTransform().position - transform.position);
+                    transform.rotation = Quaternion.Lerp(transform.rotation,_TargetRotation,Time.deltaTime * _RotationSpeed);
+                    CameraController.Instance.SecondaryTargetTransform = customer.GetTransform();
+                }
+                else
+                {
+                    CameraController.Instance.SecondaryTargetTransform = null;
+                }
+                
+                if (!_Input.IsHoldingAim)
+                    ChangeState(PlayerState.Idle);
                 break;
             case PlayerState.Dead:
                 break;
@@ -151,6 +170,8 @@ public class PlayerController : MonoBehaviour
             case PlayerState.Cooking:
                 break;
             case PlayerState.Robbing:
+                CameraController.Instance.SecondaryTargetTransform = null;
+                GunMesh.SetActive(false);
                 break;
             case PlayerState.Dead:
                 break;

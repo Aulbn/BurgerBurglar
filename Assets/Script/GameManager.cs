@@ -27,6 +27,12 @@ public class GameManager : MonoBehaviour
     public Vector2 PoliceMaxSpawnInterval;
     private static float NextPoliceSpawnTime;
 
+    [Header("Money")] 
+    [SerializeField] private float _CurrentMoney;
+    public float CurrentMoney => _CurrentMoney;
+    public float BurgerPrice = 12.9f;
+    public Vector2 MoneyStealRange = new Vector2(15f, 55f);
+
     public enum GameState
     {
         None,
@@ -48,6 +54,7 @@ public class GameManager : MonoBehaviour
     private void Start()
     {
         ChangeState(GameState.Gameplay);
+        HUD.SetMoneyText(0);
     }
 
     private void Update()
@@ -111,12 +118,28 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    public static void AddStolenMoney()
+    {
+        Instance.SetMoney(Instance._CurrentMoney + Random.Range(Instance.MoneyStealRange.x, Instance.MoneyStealRange.y));
+    }
+    
+    public static void AddBurgerMoney()
+    {
+        Instance.SetMoney(Instance._CurrentMoney + Instance.BurgerPrice);
+    }
+
+    private void SetMoney(float money)
+    {
+        _CurrentMoney = money;
+        HUD.SetMoneyText(_CurrentMoney);
+    }
+
     private static float GetNextCustomerSpawnTime()
     {
         float minTime = Random.Range(Instance.CustomerMinSpawnInterval.x, Instance.CustomerMinSpawnInterval.y);
         float maxTime = Random.Range(Instance.CustomerMaxSpawnInterval.x, Instance.CustomerMaxSpawnInterval.y);
         float value = Mathf.Lerp(minTime, maxTime, CurrentGameplayTime / Instance.TimeToMaxSpawn);
-        // Debug.Log("Next Customer Spawn Time Duration " + value);
+        Debug.Log("Next Customer Spawn Time Duration " + value);
         return Time.time + value;
     }
 

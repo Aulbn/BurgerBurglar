@@ -43,16 +43,16 @@ public class PlayerInteraction : MonoBehaviour
     public bool CastForVictims(Vector3 point, out ICustomer customer) //Can TRY to rob both customers and police
     {
         customer = default;
-        var colliders = Physics.OverlapSphere(point, RobDistance);
+        var colliders = Physics.OverlapSphere(point, RobDistance, InteractableLayerMask);
         if (colliders.Length == 0)
             return false;
-
+        
         float bestAngle = 360f;
         foreach (var col in colliders)
         {
             if (!col.TryGetComponent<ICustomer>(out var currentCustomer))
                 continue;
-            
+
             float angle = Vector3.Angle(transform.forward,
                 (col.transform.position - transform.position).normalized);
 
@@ -100,6 +100,9 @@ public class PlayerInteraction : MonoBehaviour
 
     private void OnDrawGizmos()
     {
+        Gizmos.color = Color.green;
         Gizmos.DrawWireSphere(transform.position, _InteractionRadius);
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(transform.position, RobDistance);
     }
 }

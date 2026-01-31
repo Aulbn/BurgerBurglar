@@ -141,8 +141,11 @@ MonoBehaviour:
   HasGottenFood: 0
   MaxWaitTime: 30
   AlertTime: 2
+  DealertTime: 2
+  FieldOfView: 80
+  RangeOfView: 10
   _LeaveQueueTime: 30
-  _AlertAmount: 2
+  AlertAmount: 0
   CurrentState: 0
 --- !u!195 &6360281603681504452
 NavMeshAgent:
