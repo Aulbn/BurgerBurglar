@@ -29,4 +29,9 @@ public class PlayerAnimationController : MonoBehaviour
     {
         _Animator.SetBool("bool_aim", aim);
     }
+    
+    public void TriggerDeath()
+    {
+        _Animator.SetTrigger("trigger_death");
+    }
 }

@@ -1,5 +1,7 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 public class PoliceController : MonoBehaviour, ICustomer
@@ -34,6 +36,9 @@ public class PoliceController : MonoBehaviour, ICustomer
     public AIState CurrentState;
 
     public Animator _Animator;
+    
+    [Header("Audio")] 
+    public AudioSource GunShotSound;
     
     private int _EnteredStateFrame = 0;
     
@@ -72,9 +77,10 @@ public class PoliceController : MonoBehaviour, ICustomer
                 break;
             case AIState.Combat:
                 //TODO: ADD VFX
-                _Animator.SetTrigger("trigger_shoot");
-                _Animator.SetBool("bool_aim", true);
-                GameManager.GameOver_Death();
+                StartCoroutine(IEShootPlayer());
+                // _Animator.SetTrigger("trigger_shoot");
+                // _Animator.SetBool("bool_aim", true);
+                // GameManager.GameOver_Death();
                 break;
             case AIState.Fleeing:
                 LeaveQueue();
@@ -152,6 +158,27 @@ public class PoliceController : MonoBehaviour, ICustomer
                 break;
         }
     }
+
+    private IEnumerator IEShootPlayer()
+    {
+        _Agent.isStopped = true;
+        _Animator.SetBool("bool_aim", true);
+        yield return new WaitForSeconds(1f);
+        StartCoroutine(IEEmptyClip());
+        PlayerController.Instance.Kill();
+        yield return new WaitForSeconds(3f);
+        GameManager.GameOver_Death();
+    }
+    
+    private IEnumerator IEEmptyClip()
+    {
+        for (int i = 0; i < 6; i++)
+        {
+            _Animator.SetTrigger("trigger_shoot");
+            GunShotSound.Play();
+            yield return new WaitForSeconds(0.2f);
+        }
+    }
     
     private void UpdateAlert()
     {
@@ -198,9 +225,15 @@ public class PoliceController : MonoBehaviour, ICustomer
     {
         GameManager.RegisterQueue.RemoveCustomer(this);
     }
-    
-    
-    public void GiveOrder() { }
+
+
+    public void GiveOrder()
+    {
+        ChangeState(AIState.Leaving);
+        PlayerController.ToggleMeat(false);
+        PlayerController.ToggleBread(false);
+        GameManager.AddBurgerMoney();
+    }
     public Transform GetTransform() => transform;
     public void OnThreaten()
     {

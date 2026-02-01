@@ -107,43 +107,39 @@ public class PlayerInteraction : MonoBehaviour
         if (colliders.Length == 0)
             return false;
 
-        var bestAngle = 360f;
+        var bestAngle = 500f;
         foreach (var col in colliders)
         {
-            Debug.Log("Casted " + col.gameObject.name);
             if (col.TryGetComponent<HostageController>(out var currentHostage))
             {
-                Debug.Log("FOUND HOSTAGE " + col.gameObject.name);
                 if (currentHostage.CurrentState != HostageController.HostageState.Escaping)
                     currentHostage = null;
             }
             col.TryGetComponent<CustomerController>(out var currentCustomer);
-            col.TryGetComponent<PoliceController>(out var currentInteractable);
+            col.TryGetComponent<PoliceController>(out var currentPolice);
             
-            float angle = Vector3.Angle(transform.forward,
-            (col.transform.position - transform.position).normalized);
-            // float angle = Vector3.Angle(PlayerController.Instance.Input.Movement,
-            //     (col.transform.position - transform.position).normalized);
+            if (currentHostage == null && currentCustomer == null &&  currentPolice == null)
+                continue;
             
-            Debug.Log($"Findings: {currentHostage == null}, {currentCustomer == null}, {currentInteractable == null}");
+            Vector3 playerDir = new Vector3(PlayerController.Instance.Input.Movement.x, 0, PlayerController.Instance.Input.Movement.y);
+            if (playerDir == Vector3.zero)
+                playerDir = transform.forward;
+            float angle = Vector3.Angle(playerDir, (col.transform.position - transform.position).normalized);
             
             if (angle < bestAngle)
             {
                 if (currentHostage != null)
                 {
-                    Debug.Log("Setting HOSTAGE" + currentHostage.gameObject.name);
                     controller = currentHostage;
                 }
                 else if  (currentCustomer != null)
                     controller = currentCustomer;
-                else if   (currentInteractable != null)
-                    controller = currentInteractable;
+                else if   (currentPolice != null)
+                    controller = currentPolice;
                 bestAngle = angle;
             }
         }
         
-        // Debug.Log();
-
         if (controller == null)
             return false;
         
