@@ -528,7 +528,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 3154572522851681295}
         m_TargetAssemblyTypeName: GameMenu, Assembly-CSharp
-        m_MethodName: Resume
+        m_MethodName: Retry
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

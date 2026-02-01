@@ -33,6 +33,9 @@ public class GameManager : MonoBehaviour
     public float BurgerPrice = 12.9f;
     public Vector2 MoneyStealRange = new Vector2(15f, 55f);
 
+    [Header("Audio")] 
+    public AudioSource DoorBellSound;
+
     public enum GameState
     {
         None,
@@ -141,7 +144,6 @@ public class GameManager : MonoBehaviour
     {
         ChangeState(GameState.GameOver);
         GameMenu.ShowGameOverMenu("On your corpse they found", CurrentMoney);
-
     }
     
     public static void AddBurgerMoney()
@@ -169,6 +171,7 @@ public class GameManager : MonoBehaviour
         if (RegisterQueue.QueueList.Count < RegisterQueue.MaxLength)
             Instantiate(Instance.CustomerPrefab, ExitPosition, Quaternion.LookRotation(Instance._ExitPositionTransform.forward));
         NextCustomerSpawnTime = GetNextCustomerSpawnTime();
+        Instance.DoorBellSound.Play();
     }
     
     private static float GetNextPoliceSpawnTime()
@@ -183,6 +186,7 @@ public class GameManager : MonoBehaviour
         if (RegisterQueue.QueueList.Count < RegisterQueue.MaxLength)
             Instantiate(Instance.PolicePrefab, ExitPosition, Quaternion.LookRotation(Instance._ExitPositionTransform.forward));
         NextPoliceSpawnTime = GetNextPoliceSpawnTime();
+        Instance.DoorBellSound.Play();
     }
     
     
