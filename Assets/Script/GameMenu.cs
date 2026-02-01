@@ -6,15 +6,15 @@ using UnityEngine.SceneManagement;
 public class GameMenu : MonoBehaviour
 {
     public static GameMenu Instance;
-    
+
     public GameObject PauseMenuPanel;
-    
+
     public GameObject GameOverPanel;
     public TextMeshProUGUI GameOverReasonText;
     public TextMeshProUGUI GameOverMoneyText;
     public TextMeshProUGUI GameOverHighscoreText;
 
-    
+
     private void Awake()
     {
         Instance = this;
@@ -59,16 +59,17 @@ public class GameMenu : MonoBehaviour
         Instance.GameOverPanel.SetActive(true);
         Instance.GameOverReasonText.text = reason;
         Instance.GameOverMoneyText.text = $"${money}";
-        float currentHighscore = -1;
-        if (PlayerPrefs.HasKey("highscore"))
-            currentHighscore = PlayerPrefs.GetFloat("highscore");
+        // float currentHighscore = -1;
+        // if (PlayerPrefs.HasKey("highscore"))
+        float currentHighscore = PlayerPrefs.GetFloat("highscore");
+        Debug.Log("Last highscore: " + currentHighscore);
         if (newHighScore)
             Instance.GameOverHighscoreText.text = "NEW HIGH SCORE";
         else
             Instance.GameOverHighscoreText.text = currentHighscore > 0 ? ("Highscore is " + currentHighscore) : "There is no Highscore yet";
     }
 
-    
+
     public static void TogglePauseMenu()
     {
         if (Time.timeScale == 0)
@@ -76,25 +77,25 @@ public class GameMenu : MonoBehaviour
         else
             Instance.Pause();
     }
-    
+
     public void Pause()
     {
         Time.timeScale = 0;
         TogglePauseMenu(true);
     }
-    
+
     public void Retry()
     {
         Time.timeScale = 1;
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
-    
+
     public void Resume()
     {
         Time.timeScale = 1;
         TogglePauseMenu(false);
     }
-    
+
     public void Exit()
     {
         Application.Quit();

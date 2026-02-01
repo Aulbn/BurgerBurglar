@@ -8,8 +8,8 @@ public class GameManager : MonoBehaviour
     public static GameManager Instance;
 
     [SerializeField] private Transform _ExitPositionTransform;
-    public static Vector3 ExitPosition =>  Instance._ExitPositionTransform.position;
-    
+    public static Vector3 ExitPosition => Instance._ExitPositionTransform.position;
+
     [SerializeField] private RegisterQueue _RegisterQueue;
     public static RegisterQueue RegisterQueue => Instance._RegisterQueue;
 
@@ -21,19 +21,19 @@ public class GameManager : MonoBehaviour
     public Vector2 CustomerMinSpawnInterval;
     public Vector2 CustomerMaxSpawnInterval;
     private static float NextCustomerSpawnTime;
-    
+
     public PoliceController PolicePrefab;
     public Vector2 PoliceMinSpawnInterval;
     public Vector2 PoliceMaxSpawnInterval;
     private static float NextPoliceSpawnTime;
 
-    [Header("Money")] 
+    [Header("Money")]
     [SerializeField] private float _CurrentMoney;
     public static float CurrentMoney => Instance._CurrentMoney;
     public float BurgerPrice = 12.9f;
     public Vector2 MoneyStealRange = new Vector2(15f, 55f);
 
-    [Header("Audio")] 
+    [Header("Audio")]
     public AudioSource DoorBellSound;
     public AudioSource CashSound;
 
@@ -118,7 +118,7 @@ public class GameManager : MonoBehaviour
                 break;
         }
     }
-    
+
     private void ExitState()
     {
         switch (CurrentState)
@@ -148,16 +148,18 @@ public class GameManager : MonoBehaviour
     public static void GameOver_ExitedDoor()
     {
         ChangeState(GameState.GameOver);
+        float oldScore = PlayerPrefs.GetFloat("highscore");
         PlayerPrefs.SetFloat("highscore", CurrentMoney);
-        GameMenu.ShowGameOverMenu("You ran out the door with", CurrentMoney);
+        PlayerPrefs.Save();
+        GameMenu.ShowGameOverMenu("You ran out the door with", CurrentMoney, CurrentMoney > oldScore);
     }
-    
+
     public static void GameOver_Death()
     {
         ChangeState(GameState.GameOver);
         GameMenu.ShowGameOverMenu("The cops shot you, and on your corpse they found", CurrentMoney);
     }
-    
+
     public static void AddBurgerMoney()
     {
         Instance.SetMoney(Instance._CurrentMoney + Instance.BurgerPrice);
@@ -187,14 +189,14 @@ public class GameManager : MonoBehaviour
         NextCustomerSpawnTime = GetNextCustomerSpawnTime();
         Instance.DoorBellSound.Play();
     }
-    
+
     private static float GetNextPoliceSpawnTime()
     {
         float minTime = Random.Range(Instance.PoliceMinSpawnInterval.x, Instance.PoliceMinSpawnInterval.y);
         float maxTime = Random.Range(Instance.PoliceMaxSpawnInterval.x, Instance.PoliceMaxSpawnInterval.y);
         return Time.time + Mathf.Lerp(minTime, maxTime, CurrentGameplayTime / Instance.TimeToMaxSpawn);
     }
-    
+
     private static void SpawnPolice()
     {
         if (RegisterQueue.QueueList.Count < RegisterQueue.MaxLength)
@@ -202,6 +204,6 @@ public class GameManager : MonoBehaviour
         NextPoliceSpawnTime = GetNextPoliceSpawnTime();
         Instance.DoorBellSound.Play();
     }
-    
-    
+
+
 }
