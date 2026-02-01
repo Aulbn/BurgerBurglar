@@ -329,7 +329,7 @@ NavMeshAgent:
   m_Height: 2
   m_BaseOffset: 0
   m_WalkableMask: 4294967295
-  m_ObstacleAvoidanceType: 4
+  m_ObstacleAvoidanceType: 0
 --- !u!136 &1202580405752568863
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -792,6 +792,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: 60374b3db8a39b74ab9bdcea078cc084, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 11a2e6ac919daf641a906dcdec8b34bc, type: 2}
     - target: {fileID: -7511558181221131132, guid: 60374b3db8a39b74ab9bdcea078cc084, type: 3}
       propertyPath: 'm_Materials.Array.data[1]'
       value: 

@@ -9,27 +9,27 @@ public class CustomerController : MonoBehaviour, ICustomer, IInteractable
     [Header("Interaction")]
     public Vector2 InteractionUIOffset;
     [SerializeField] private bool _IsInteractable;
-    
+
     [Header("Other")]
     public float NormalSpeed;
     public float FleeSpeed;
-    
+
     private NavMeshAgent _Agent;
 
     public bool HasGottenFood;
     public float MaxWaitTime = 30f;
     public float AlertTime = 2f;
     public float DealertTime = 2f;
-    
+
     [Header("Sight")]
     public float FieldOfView;
     public float RangeOfView;
-    
+
     [Header("Queueing")]
     [SerializeField] private float _LeaveQueueTime;
-    
+
     [Header("Alert")]
-    [Range(0,1)] public float AlertAmount;
+    [Range(0, 1)] public float AlertAmount;
     public GameObject AlertImageParent;
     public Image AlertImageFill;
 
@@ -44,7 +44,7 @@ public class CustomerController : MonoBehaviour, ICustomer, IInteractable
 
     private void Awake()
     {
-        _Agent =  GetComponent<NavMeshAgent>();
+        _Agent = GetComponent<NavMeshAgent>();
     }
 
     private void Start()
@@ -92,7 +92,7 @@ public class CustomerController : MonoBehaviour, ICustomer, IInteractable
                 LeaveQueue();
                 _Agent.speed = NormalSpeed;
                 _Agent.SetDestination(GameManager.ExitPosition);
-                break;            
+                break;
             case AIState.Threatened:
                 _Animator.SetTrigger("trigger_robbed");
                 // Debug.Log("Threatened");
@@ -107,7 +107,7 @@ public class CustomerController : MonoBehaviour, ICustomer, IInteractable
     {
         if (_EnteredStateFrame == Time.frameCount) //Don't run update same frame as enter
             return;
-        
+
         switch (CurrentState)
         {
             case AIState.Queuing:
@@ -117,20 +117,20 @@ public class CustomerController : MonoBehaviour, ICustomer, IInteractable
                 }
                 UpdateAlert();
                 if (AgentHasArrived())
-                    transform.rotation =Quaternion.Lerp(transform.rotation, Quaternion.LookRotation(-GameManager.RegisterQueue.transform.forward), Time.deltaTime * 8f);
+                    transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.LookRotation(-GameManager.RegisterQueue.transform.forward), Time.deltaTime * 8f);
                 if (AlertAmount > 0)
                     ChangeState(AIState.Alert);
-                
+
                 if (Time.time > _LeaveQueueTime)
                     ChangeState(AIState.Leaving);
-                
+
                 break;
             case AIState.Alert:
                 UpdateAlert();
                 if (AlertAmount == 0)
-                    ChangeState(AIState.Queuing);        
+                    ChangeState(AIState.Queuing);
                 if (AlertAmount >= 1)
-                    ChangeState(AIState.Fleeing);   
+                    ChangeState(AIState.Fleeing);
                 break;
             case AIState.Combat:
                 break;
@@ -156,7 +156,7 @@ public class CustomerController : MonoBehaviour, ICustomer, IInteractable
                 break;
         }
     }
-    
+
     private void ExitState()
     {
         switch (CurrentState)
@@ -184,7 +184,7 @@ public class CustomerController : MonoBehaviour, ICustomer, IInteractable
     {
         GameManager.RegisterQueue.AddCustomer(this);
     }
-    
+
     private void LeaveQueue()
     {
         GameManager.RegisterQueue.RemoveCustomer(this);
@@ -201,16 +201,16 @@ public class CustomerController : MonoBehaviour, ICustomer, IInteractable
 
         AlertAmount = Mathf.Clamp01(AlertAmount);
     }
-    
+
     private bool PlayerInSight()
     {
         if (Vector3.Distance(transform.position, PlayerController.Instance.transform.position) > RangeOfView)
             return false;
-        
+
         if (Vector3.Angle(transform.forward, (PlayerController.Instance.transform.position - transform.position).normalized) >
             FieldOfView)
             return false;
-        
+
         return true;
     }
 
@@ -251,6 +251,8 @@ public class CustomerController : MonoBehaviour, ICustomer, IInteractable
     }
     public void OnUnThreaten()
     {
+        if (_Agent == null)
+            return;
         ChangeState(AIState.Fleeing);
     }
 
@@ -262,12 +264,12 @@ public class CustomerController : MonoBehaviour, ICustomer, IInteractable
         Gizmos.DrawRay(transform.position + Vector3.up, Quaternion.AngleAxis(FieldOfView * 0.5f, Vector3.up) * transform.forward * RangeOfView);
         Gizmos.DrawRay(transform.position + Vector3.up, Quaternion.AngleAxis(-FieldOfView * 0.5f, Vector3.up) * transform.forward * RangeOfView);
     }
-    
+
     private void OnDrawGizmosSelected()
     {
         if (_Agent == null)
             return;
-        
+
         Gizmos.color = Color.yellow;
         Gizmos.DrawLine(transform.position + Vector3.up, _Agent.destination);
     }

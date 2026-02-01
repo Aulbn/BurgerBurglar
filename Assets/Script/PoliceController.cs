@@ -8,44 +8,47 @@ public class PoliceController : MonoBehaviour, ICustomer
 {
     [Header("Interaction")]
     [SerializeField] private bool _IsInteractable;
-    
+
     [Header("Other")]
     public float NormalSpeed;
     public float FleeSpeed;
-    
+
     private NavMeshAgent _Agent;
 
     public bool HasGottenFood;
     public float MaxWaitTime = 30f;
     public float AlertTime = 2f;
     public float DealertTime = 2f;
-    
+
     [Header("Sight")]
     public float FieldOfView;
     public float RangeOfView;
-    
+
     [Header("Queueing")]
     [SerializeField] private float _LeaveQueueTime;
 
-    [Header("Alert")] 
+    [Header("Alert")]
     public float GunReactionSpeedMultiplier = 3f;
-    [Range(0,1)] public float AlertAmount; 
+    [Range(0, 1)] public float AlertAmount;
     public GameObject AlertImageParent;
     public Image AlertImageFill;
 
     public AIState CurrentState;
 
     public Animator _Animator;
-    
-    [Header("Audio")] 
+
+    public GameObject GunMesh;
+    public ParticleSystem MuzzleFlashEffect;
+
+    [Header("Audio")]
     public AudioSource GunClickSound;
     public AudioSource GunShotSound;
-    
+
     private int _EnteredStateFrame = 0;
-    
+
     private void Awake()
     {
-        _Agent =  GetComponent<NavMeshAgent>();
+        _Agent = GetComponent<NavMeshAgent>();
     }
 
     private void Start()
@@ -53,6 +56,7 @@ public class PoliceController : MonoBehaviour, ICustomer
         ChangeState(AIState.Queuing);
         _Agent.speed = NormalSpeed;
         HasGottenFood = false;
+        GunMesh.SetActive(false);
     }
 
     private void Update()
@@ -63,8 +67,8 @@ public class PoliceController : MonoBehaviour, ICustomer
         UpdateState();
         _Animator.SetFloat("float_velocity", _Agent.velocity.magnitude);
     }
-    
-     private void ChangeState(AIState newState)
+
+    private void ChangeState(AIState newState)
     {
         _EnteredStateFrame = Time.frameCount;
         ExitState();
@@ -80,6 +84,7 @@ public class PoliceController : MonoBehaviour, ICustomer
                 _Animator.SetBool("bool_alert", true);
                 break;
             case AIState.Combat:
+                GunMesh.SetActive(true);
                 StartCoroutine(IEShootPlayer());
                 break;
             case AIState.Fleeing:
@@ -91,8 +96,8 @@ public class PoliceController : MonoBehaviour, ICustomer
                 LeaveQueue();
                 _Agent.speed = NormalSpeed;
                 _Agent.SetDestination(GameManager.ExitPosition);
-                break;            
-            case AIState.Threatened: 
+                break;
+            case AIState.Threatened:
                 break;
         }
     }
@@ -101,7 +106,7 @@ public class PoliceController : MonoBehaviour, ICustomer
     {
         if (_EnteredStateFrame == Time.frameCount) //Don't run update same frame as enter
             return;
-        
+
         switch (CurrentState)
         {
             case AIState.Queuing:
@@ -112,19 +117,22 @@ public class PoliceController : MonoBehaviour, ICustomer
                 UpdateAlert();
                 if (AlertAmount > 0)
                     ChangeState(AIState.Alert);
-                
+
                 if (Time.time > _LeaveQueueTime)
                     ChangeState(AIState.Leaving);
-                
+
                 break;
             case AIState.Alert:
                 UpdateAlert();
                 if (AlertAmount == 0)
-                    ChangeState(HasGottenFood ? AIState.Leaving : AIState.Queuing);        
+                    ChangeState(HasGottenFood ? AIState.Leaving : AIState.Queuing);
                 if (AlertAmount >= 1)
-                    ChangeState(AIState.Combat);   
+                    ChangeState(AIState.Combat);
                 break;
             case AIState.Combat:
+                transform.rotation = Quaternion.Lerp(transform.rotation,
+                    Quaternion.LookRotation(PlayerController.Instance.transform.position - transform.position),
+                    Time.deltaTime * 8);
                 break;
             case AIState.Fleeing:
                 if (AgentHasArrived())
@@ -134,11 +142,11 @@ public class PoliceController : MonoBehaviour, ICustomer
                 if (AgentHasArrived())
                     Destroy(gameObject);
                 break;
-            case AIState.Threatened: 
+            case AIState.Threatened:
                 break;
         }
     }
-    
+
     private void ExitState()
     {
         switch (CurrentState)
@@ -155,7 +163,7 @@ public class PoliceController : MonoBehaviour, ICustomer
                 break;
             case AIState.Leaving:
                 break;
-            case AIState.Threatened: 
+            case AIState.Threatened:
                 break;
         }
     }
@@ -168,21 +176,23 @@ public class PoliceController : MonoBehaviour, ICustomer
         GunClickSound.Play();
         yield return new WaitForSeconds(1f);
         StartCoroutine(IEEmptyClip());
+        _Animator.SetBool("bool_aim", true);
         PlayerController.Instance.Kill();
         yield return new WaitForSeconds(2f);
         GameManager.GameOver_Death();
     }
-    
+
     private IEnumerator IEEmptyClip()
     {
         for (int i = 0; i < 6; i++)
         {
             _Animator.SetTrigger("trigger_shoot");
             GunShotSound.Play();
+            MuzzleFlashEffect.Play();
             yield return new WaitForSeconds(0.2f);
         }
     }
-    
+
     private void UpdateAlert()
     {
         //Could multiply the speed with some value, like distance, or if player holds gun.
@@ -199,16 +209,16 @@ public class PoliceController : MonoBehaviour, ICustomer
 
         AlertAmount = Mathf.Clamp01(AlertAmount);
     }
-    
+
     private bool PlayerInSight()
     {
         if (Vector3.Distance(transform.position, PlayerController.Instance.transform.position) > RangeOfView)
             return false;
-        
+
         if (Vector3.Angle(transform.forward, (PlayerController.Instance.transform.position - transform.position).normalized) >
             FieldOfView)
             return false;
-        
+
         return true;
     }
 
@@ -218,12 +228,12 @@ public class PoliceController : MonoBehaviour, ICustomer
         return !float.IsPositiveInfinity(dist) && _Agent.pathStatus == NavMeshPathStatus.PathComplete &&
                _Agent.remainingDistance == 0;
     }
-    
+
     private void JoinQueue()
     {
         GameManager.RegisterQueue.AddCustomer(this);
     }
-    
+
     private void LeaveQueue()
     {
         GameManager.RegisterQueue.RemoveCustomer(this);

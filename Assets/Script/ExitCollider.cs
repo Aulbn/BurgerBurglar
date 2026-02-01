@@ -30,6 +30,6 @@ public class ExitCollider : MonoBehaviour
                     Destroy(customer.gameObject);
             }
         }
-        
+
     }
 }
