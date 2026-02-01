@@ -225,9 +225,15 @@ public class PoliceController : MonoBehaviour, ICustomer
     {
         GameManager.RegisterQueue.RemoveCustomer(this);
     }
-    
-    
-    public void GiveOrder() { }
+
+
+    public void GiveOrder()
+    {
+        ChangeState(AIState.Leaving);
+        PlayerController.ToggleMeat(false);
+        PlayerController.ToggleBread(false);
+        GameManager.AddBurgerMoney();
+    }
     public Transform GetTransform() => transform;
     public void OnThreaten()
     {
