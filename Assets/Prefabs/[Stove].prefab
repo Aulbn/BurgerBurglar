@@ -62,7 +62,7 @@ MonoBehaviour:
   BurntSmokeColor: {r: 0.122641504, g: 0.122641504, b: 0.122641504, a: 0.19607843}
   CurrentState: 0
   CookTime: 5
-  BeforeBurningTime: 5
+  BeforeBurningTime: 15
   BurnTime: 3
   _Timer: 0
 --- !u!65 &3314318072815371615

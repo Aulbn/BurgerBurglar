@@ -41,6 +41,16 @@ public class GameMenu : MonoBehaviour
 
     private void TogglePauseMenu(bool value)
     {
+        if (value)
+        {
+            Cursor.lockState = CursorLockMode.Confined;
+            Cursor.visible = true;
+        }
+        else
+        {
+            Cursor.lockState = CursorLockMode.Locked;
+            Cursor.visible = false;
+        }
         Instance.PauseMenuPanel.SetActive(value);
     }
 
@@ -75,6 +85,7 @@ public class GameMenu : MonoBehaviour
     
     public void Retry()
     {
+        Time.timeScale = 1;
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
     

@@ -73,18 +73,26 @@ public class GameManager : MonoBehaviour
         switch (newState)
         {
             case GameState.Gameplay:
+                Cursor.lockState = CursorLockMode.Locked;
+                Cursor.visible = false;
                 CurrentGameplayTime = 0;
                 Debug.Log("Gameplay", Instance.gameObject);
                 NextCustomerSpawnTime = GetNextCustomerSpawnTime();
                 NextPoliceSpawnTime = GetNextPoliceSpawnTime();
                 break;
             case GameState.Paused:
+                Cursor.lockState = CursorLockMode.Confined;
+                Cursor.visible = true;
                 Debug.Log("Paused", Instance.gameObject);
                 break;
             case GameState.MainMenu:
+                Cursor.lockState = CursorLockMode.None;
+                Cursor.visible = true;
                 Debug.Log("Main Menu", Instance.gameObject);
                 break;
             case GameState.GameOver:
+                Cursor.lockState = CursorLockMode.Confined;
+                Cursor.visible = true;
                 Debug.Log("GAME OVER", Instance.gameObject);
                 PlayerController.Instance.gameObject.SetActive(false);
                 break;

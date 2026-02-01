@@ -133,7 +133,7 @@ public class PlayerController : MonoBehaviour
                 GunMesh.SetActive(true);
                 GunClickSound.Play();
                 _Animation.ToggleAim(true);
-                // DropBurger();
+                DropBurger();
                 break;
             case PlayerState.Dead:
                 DropBurger();
