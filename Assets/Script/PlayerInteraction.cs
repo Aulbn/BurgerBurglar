@@ -100,6 +100,56 @@ public class PlayerInteraction : MonoBehaviour
         return true;
     }
 
+    public bool CastForEveryone(Vector3 point, out MonoBehaviour controller)
+    {
+        controller = default;
+        var colliders = Physics.OverlapSphere(point, RobDistance);
+        if (colliders.Length == 0)
+            return false;
+
+        var bestAngle = 360f;
+        foreach (var col in colliders)
+        {
+            Debug.Log("Casted " + col.gameObject.name);
+            if (col.TryGetComponent<HostageController>(out var currentHostage))
+            {
+                Debug.Log("FOUND HOSTAGE " + col.gameObject.name);
+                if (currentHostage.CurrentState != HostageController.HostageState.Escaping)
+                    currentHostage = null;
+            }
+            col.TryGetComponent<CustomerController>(out var currentCustomer);
+            col.TryGetComponent<PoliceController>(out var currentInteractable);
+            
+            float angle = Vector3.Angle(transform.forward,
+            (col.transform.position - transform.position).normalized);
+            // float angle = Vector3.Angle(PlayerController.Instance.Input.Movement,
+            //     (col.transform.position - transform.position).normalized);
+            
+            Debug.Log($"Findings: {currentHostage == null}, {currentCustomer == null}, {currentInteractable == null}");
+            
+            if (angle < bestAngle)
+            {
+                if (currentHostage != null)
+                {
+                    Debug.Log("Setting HOSTAGE" + currentHostage.gameObject.name);
+                    controller = currentHostage;
+                }
+                else if  (currentCustomer != null)
+                    controller = currentCustomer;
+                else if   (currentInteractable != null)
+                    controller = currentInteractable;
+                bestAngle = angle;
+            }
+        }
+        
+        // Debug.Log();
+
+        if (controller == null)
+            return false;
+        
+        return true;
+    }
+
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.green;

@@ -177,38 +177,79 @@ public class PlayerController : MonoBehaviour
                 }
                 _Cc.Move(Vector3.zero);
                 AlertSpeedMultiplier = 3;
-                if (_Interact.CastForHostages(transform.position, out var hostage))
+                // if (_Interact.CastForHostages(transform.position, out var hostage))
+                // {
+                //     _TargetRotation = Quaternion.LookRotation(hostage.transform.position - transform.position);
+                //     transform.rotation = Quaternion.Lerp(transform.rotation,_TargetRotation,Time.deltaTime * _RotationSpeed);
+                //     CameraController.Instance.SecondaryTargetTransform = hostage.transform;
+                //     hostage.IncreaseScared();
+                //     if (_ThreatenedCustomer != null)
+                //     {
+                //         _ThreatenedCustomer.OnUnThreaten();
+                //         _ThreatenedCustomer = null;
+                //     }
+                // }
+                // else if (_Interact.CastForVictims(transform.position, out var customer))
+                // {
+                //     _TargetRotation = Quaternion.LookRotation(customer.GetTransform().position - transform.position);
+                //     transform.rotation = Quaternion.Lerp(transform.rotation,_TargetRotation,Time.deltaTime * _RotationSpeed);
+                //     CameraController.Instance.SecondaryTargetTransform = customer.GetTransform();
+                //     if (_ThreatenedCustomer != null && _ThreatenedCustomer != customer)
+                //         _ThreatenedCustomer.OnUnThreaten();
+                //     _ThreatenedCustomer = customer;
+                //     _ThreatenedCustomer.OnThreaten();
+                // }
+                // else
+                // {
+                //     if (_ThreatenedCustomer != null)
+                //     {
+                //         // Debug.Log("Unthreaten customer " + _ThreatenedCustomer, _ThreatenedCustomer.GetTransform().gameObject);
+                //         _ThreatenedCustomer.OnUnThreaten();
+                //         _ThreatenedCustomer = null;
+                //     }
+                //     CameraController.Instance.SecondaryTargetTransform = null;
+                // }
+
+                Debug.Log("CastForEveryone 1");
+                if (_Interact.CastForEveryone(transform.position, out var everyone))
                 {
-                    _TargetRotation = Quaternion.LookRotation(hostage.transform.position - transform.position);
-                    transform.rotation = Quaternion.Lerp(transform.rotation,_TargetRotation,Time.deltaTime * _RotationSpeed);
-                    CameraController.Instance.SecondaryTargetTransform = hostage.transform;
-                    hostage.IncreaseScared();
-                    if (_ThreatenedCustomer != null)
+                    Debug.Log("CastForEveryone 2 " + everyone.GetType());
+                    if (everyone.GetType() == typeof(HostageController))
                     {
-                        _ThreatenedCustomer.OnUnThreaten();
-                        _ThreatenedCustomer = null;
+                        var hostage = (HostageController)everyone;
+                        _TargetRotation = Quaternion.LookRotation(hostage.transform.position - transform.position);
+                        transform.rotation = Quaternion.Lerp(transform.rotation,_TargetRotation,Time.deltaTime * _RotationSpeed);
+                        CameraController.Instance.SecondaryTargetTransform = hostage.transform;
+                        hostage.IncreaseScared();
+                        if (_ThreatenedCustomer != null)
+                        {
+                            _ThreatenedCustomer.OnUnThreaten();
+                            _ThreatenedCustomer = null;
+                        }
+                    }
+                    else if (everyone.GetType() == typeof(ICustomer))
+                    {
+                        var customer = (ICustomer)everyone;
+                        _TargetRotation = Quaternion.LookRotation(customer.GetTransform().position - transform.position);
+                        transform.rotation = Quaternion.Lerp(transform.rotation,_TargetRotation,Time.deltaTime * _RotationSpeed);
+                        CameraController.Instance.SecondaryTargetTransform = customer.GetTransform();
+                        if (_ThreatenedCustomer != null && _ThreatenedCustomer != customer)
+                            _ThreatenedCustomer.OnUnThreaten();
+                        _ThreatenedCustomer = customer;
+                        _ThreatenedCustomer.OnThreaten();
+                    }
+                    else
+                    {
+                        if (_ThreatenedCustomer != null)
+                        {
+                            // Debug.Log("Unthreaten customer " + _ThreatenedCustomer, _ThreatenedCustomer.GetTransform().gameObject);
+                            _ThreatenedCustomer.OnUnThreaten();
+                            _ThreatenedCustomer = null;
+                        }
+                        CameraController.Instance.SecondaryTargetTransform = null;
                     }
                 }
-                else if (_Interact.CastForVictims(transform.position, out var customer))
-                {
-                    _TargetRotation = Quaternion.LookRotation(customer.GetTransform().position - transform.position);
-                    transform.rotation = Quaternion.Lerp(transform.rotation,_TargetRotation,Time.deltaTime * _RotationSpeed);
-                    CameraController.Instance.SecondaryTargetTransform = customer.GetTransform();
-                    if (_ThreatenedCustomer != null && _ThreatenedCustomer != customer)
-                        _ThreatenedCustomer.OnUnThreaten();
-                    _ThreatenedCustomer = customer;
-                    _ThreatenedCustomer.OnThreaten();
-                }
-                else
-                {
-                    if (_ThreatenedCustomer != null)
-                    {
-                        // Debug.Log("Unthreaten customer " + _ThreatenedCustomer, _ThreatenedCustomer.GetTransform().gameObject);
-                        _ThreatenedCustomer.OnUnThreaten();
-                        _ThreatenedCustomer = null;
-                    }
-                    CameraController.Instance.SecondaryTargetTransform = null;
-                }
+                
                 break;
             case PlayerState.Dead:
                 break;
