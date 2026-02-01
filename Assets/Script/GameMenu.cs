@@ -12,7 +12,9 @@ public class GameMenu : MonoBehaviour
     public GameObject GameOverPanel;
     public TextMeshProUGUI GameOverReasonText;
     public TextMeshProUGUI GameOverMoneyText;
+    public TextMeshProUGUI GameOverHighscoreText;
 
+    
     private void Awake()
     {
         Instance = this;
@@ -42,12 +44,20 @@ public class GameMenu : MonoBehaviour
         Instance.PauseMenuPanel.SetActive(value);
     }
 
-    public static void ShowGameOverMenu(string reason, float money)
+    public static void ShowGameOverMenu(string reason, float money, bool newHighScore = false)
     {
         Instance.GameOverPanel.SetActive(true);
         Instance.GameOverReasonText.text = reason;
         Instance.GameOverMoneyText.text = $"${money}";
+        float currentHighscore = -1;
+        if (PlayerPrefs.HasKey("highscore"))
+            currentHighscore = PlayerPrefs.GetFloat("highscore");
+        if (newHighScore)
+            Instance.GameOverHighscoreText.text = "NEW HIGH SCORE";
+        else
+            Instance.GameOverHighscoreText.text = currentHighscore > 0 ? ("Highscore is " + currentHighscore) : "There is no Highscore yet";
     }
+
     
     public static void TogglePauseMenu()
     {

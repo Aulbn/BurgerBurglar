@@ -26,7 +26,8 @@ public class ExitCollider : MonoBehaviour
         {
             if (police.CurrentState != AIState.Queuing)
             {
-                Destroy(customer.gameObject);
+                if (customer.gameObject != null)
+                    Destroy(customer.gameObject);
             }
         }
         

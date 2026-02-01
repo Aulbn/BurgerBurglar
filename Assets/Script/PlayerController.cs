@@ -26,6 +26,11 @@ public class PlayerController : MonoBehaviour
     public float AlertSpeedMultiplier;
 
     private ICustomer _ThreatenedCustomer;
+    
+    
+    [Header("Audio")] 
+    public AudioSource GunClickSound;
+    public AudioSource GunClickOffSound;
 
     private CharacterController _Cc;
     private PlayerInputHandler _Input;
@@ -102,7 +107,7 @@ public class PlayerController : MonoBehaviour
             _Animation.Trigger_Cap();
         MaskMesh.SetActive(HasMaskOn);
         CapMesh.SetActive(!HasMaskOn);
-        DropBurger();
+        // DropBurger();
     }
     
     private void DropBurger()
@@ -126,8 +131,9 @@ public class PlayerController : MonoBehaviour
                 break;
             case PlayerState.Robbing:
                 GunMesh.SetActive(true);
+                GunClickSound.Play();
                 _Animation.ToggleAim(true);
-                DropBurger();
+                // DropBurger();
                 break;
             case PlayerState.Dead:
                 DropBurger();
@@ -242,10 +248,20 @@ public class PlayerController : MonoBehaviour
                 CameraController.Instance.SecondaryTargetTransform = null;
                 GunMesh.SetActive(false);
                 _Animation.ToggleAim(false);
+                GunClickOffSound.Play();
                 break;
             case PlayerState.Dead:
                 break;
         }
+    }
+    
+    public Vector3 GetProjectedInput()
+    {
+        if (_Input.Movement == Vector2.zero)
+            return Vector3.zero;
+        
+        Vector3 input = new Vector3(_Input.Movement.x, 0, _Input.Movement.y);
+        return Quaternion.AngleAxis(-45f, Vector3.up) * input;
     }
 
     public void Kill()
@@ -257,7 +273,7 @@ public class PlayerController : MonoBehaviour
     {
         //Movement
         _CurrentSpeed = speed;
-        Vector3 moveDir = new Vector3(_Input.Movement.x, 0, _Input.Movement.y);
+        Vector3 moveDir = GetProjectedInput();
         if (_Input.Movement != Vector2.zero)
             _TargetRotation = Quaternion.LookRotation(moveDir);
         _Cc.Move(moveDir * (_CurrentSpeed * Time.deltaTime));

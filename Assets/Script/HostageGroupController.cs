@@ -46,6 +46,9 @@ public class HostageGroupController : MonoBehaviour
 
     private void ReleaseHostage()
     {
+        if (GameManager.CurrentState == GameManager.GameState.GameOver)
+            return;
+        
         foreach (var hostage in HostageList)
         {
             if (hostage.CurrentState == HostageController.HostageState.Idle)

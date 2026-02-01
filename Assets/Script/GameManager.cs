@@ -35,6 +35,7 @@ public class GameManager : MonoBehaviour
 
     [Header("Audio")] 
     public AudioSource DoorBellSound;
+    public AudioSource CashSound;
 
     public enum GameState
     {
@@ -137,13 +138,14 @@ public class GameManager : MonoBehaviour
     public static void GameOver_ExitedDoor()
     {
         ChangeState(GameState.GameOver);
+        PlayerPrefs.SetFloat("highscore", CurrentMoney);
         GameMenu.ShowGameOverMenu("You ran out the door with", CurrentMoney);
     }
     
     public static void GameOver_Death()
     {
         ChangeState(GameState.GameOver);
-        GameMenu.ShowGameOverMenu("On your corpse they found", CurrentMoney);
+        GameMenu.ShowGameOverMenu("The cops shot you, and on your corpse they found", CurrentMoney);
     }
     
     public static void AddBurgerMoney()
@@ -153,7 +155,9 @@ public class GameManager : MonoBehaviour
 
     private void SetMoney(float money)
     {
-        _CurrentMoney = money;
+        float rounded = Mathf.Round(money * 100f) / 100f;
+        _CurrentMoney = rounded;
+        CashSound.Play();
         HUD.SetMoneyText(_CurrentMoney);
     }
 
