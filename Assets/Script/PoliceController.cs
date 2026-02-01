@@ -52,6 +52,7 @@ public class PoliceController : MonoBehaviour, ICustomer
     {
         ChangeState(AIState.Queuing);
         _Agent.speed = NormalSpeed;
+        HasGottenFood = false;
     }
 
     private void Update()
@@ -75,13 +76,11 @@ public class PoliceController : MonoBehaviour, ICustomer
                 JoinQueue();
                 break;
             case AIState.Alert:
+                _Agent.SetDestination(transform.position);
+                _Animator.SetBool("bool_alert", true);
                 break;
             case AIState.Combat:
-                //TODO: ADD VFX
                 StartCoroutine(IEShootPlayer());
-                // _Animator.SetTrigger("trigger_shoot");
-                // _Animator.SetBool("bool_aim", true);
-                // GameManager.GameOver_Death();
                 break;
             case AIState.Fleeing:
                 LeaveQueue();
@@ -121,7 +120,7 @@ public class PoliceController : MonoBehaviour, ICustomer
             case AIState.Alert:
                 UpdateAlert();
                 if (AlertAmount == 0)
-                    ChangeState(AIState.Queuing);        
+                    ChangeState(HasGottenFood ? AIState.Leaving : AIState.Queuing);        
                 if (AlertAmount >= 1)
                     ChangeState(AIState.Combat);   
                 break;
@@ -147,6 +146,7 @@ public class PoliceController : MonoBehaviour, ICustomer
             case AIState.Queuing:
                 break;
             case AIState.Alert:
+                _Animator.SetBool("bool_alert", false);
                 break;
             case AIState.Combat:
                 break;
@@ -162,8 +162,9 @@ public class PoliceController : MonoBehaviour, ICustomer
 
     private IEnumerator IEShootPlayer()
     {
+        //TODO: ADD VFX
         _Agent.isStopped = true;
-        _Animator.SetBool("bool_aim", true);
+        _Animator.SetTrigger("trigger_aggro");
         GunClickSound.Play();
         yield return new WaitForSeconds(1f);
         StartCoroutine(IEEmptyClip());
@@ -231,6 +232,7 @@ public class PoliceController : MonoBehaviour, ICustomer
 
     public void GiveOrder()
     {
+        HasGottenFood = true;
         ChangeState(AIState.Leaving);
         PlayerController.ToggleMeat(false);
         PlayerController.ToggleBread(false);

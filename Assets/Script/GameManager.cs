@@ -86,6 +86,7 @@ public class GameManager : MonoBehaviour
                 break;
             case GameState.GameOver:
                 Debug.Log("GAME OVER", Instance.gameObject);
+                PlayerController.Instance.gameObject.SetActive(false);
                 break;
         }
     }
@@ -121,6 +122,7 @@ public class GameManager : MonoBehaviour
             case GameState.MainMenu:
                 break;
             case GameState.GameOver:
+                PlayerController.Instance.gameObject.SetActive(true);
                 break;
         }
     }
