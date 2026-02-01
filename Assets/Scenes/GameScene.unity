@@ -183,6 +183,10 @@ PrefabInstance:
       propertyPath: m_ConstrainProportionsScale
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: 6a9b75d815da0174d819c30ca5bedb69, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 65e1b2ef0ecb9cd4fa11f940fd967c84, type: 2}
     - target: {fileID: 919132149155446097, guid: 6a9b75d815da0174d819c30ca5bedb69, type: 3}
       propertyPath: m_Name
       value: WallCorner_GEO (2)
@@ -256,6 +260,10 @@ PrefabInstance:
       propertyPath: m_ConstrainProportionsScale
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: 6a9b75d815da0174d819c30ca5bedb69, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 65e1b2ef0ecb9cd4fa11f940fd967c84, type: 2}
     - target: {fileID: 919132149155446097, guid: 6a9b75d815da0174d819c30ca5bedb69, type: 3}
       propertyPath: m_Name
       value: WallCorner_GEO (5)
@@ -329,6 +337,10 @@ PrefabInstance:
       propertyPath: m_ConstrainProportionsScale
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: 8e772568923b5984b8167ef84f93f6e7, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 65e1b2ef0ecb9cd4fa11f940fd967c84, type: 2}
     - target: {fileID: 919132149155446097, guid: 8e772568923b5984b8167ef84f93f6e7, type: 3}
       propertyPath: m_Name
       value: Wall02_GEO (1)
@@ -402,6 +414,10 @@ PrefabInstance:
       propertyPath: m_ConstrainProportionsScale
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: 6a9b75d815da0174d819c30ca5bedb69, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 65e1b2ef0ecb9cd4fa11f940fd967c84, type: 2}
     - target: {fileID: 919132149155446097, guid: 6a9b75d815da0174d819c30ca5bedb69, type: 3}
       propertyPath: m_Name
       value: WallCorner_GEO (6)
@@ -540,6 +556,10 @@ PrefabInstance:
       propertyPath: m_ConstrainProportionsScale
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: 6a9b75d815da0174d819c30ca5bedb69, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 65e1b2ef0ecb9cd4fa11f940fd967c84, type: 2}
     - target: {fileID: 919132149155446097, guid: 6a9b75d815da0174d819c30ca5bedb69, type: 3}
       propertyPath: m_Name
       value: WallCorner_GEO (4)
@@ -797,7 +817,7 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ab4a2f9f1094d964e94e43b965ab2907, type: 3}
---- !u!1001 &257001624
+--- !u!1001 &310733536
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
@@ -827,7 +847,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 9e622a207e8a20e41ba8789f9fb0498e, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 6.761
+      value: 6.771
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 9e622a207e8a20e41ba8789f9fb0498e, type: 3}
       propertyPath: m_LocalRotation.w
@@ -863,7 +883,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 9e622a207e8a20e41ba8789f9fb0498e, type: 3}
       propertyPath: m_Name
-      value: WallWindow_GEO (8)
+      value: WallWindow_GEO (10)
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -991,6 +1011,10 @@ PrefabInstance:
       propertyPath: m_ConstrainProportionsScale
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: 6a9b75d815da0174d819c30ca5bedb69, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 65e1b2ef0ecb9cd4fa11f940fd967c84, type: 2}
     - target: {fileID: 919132149155446097, guid: 6a9b75d815da0174d819c30ca5bedb69, type: 3}
       propertyPath: m_Name
       value: WallCorner_GEO (7)
@@ -1201,6 +1225,10 @@ PrefabInstance:
       propertyPath: m_ConstrainProportionsScale
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: 3bdb4531c4f99a54aafac96de9796160, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 65e1b2ef0ecb9cd4fa11f940fd967c84, type: 2}
     - target: {fileID: 919132149155446097, guid: 3bdb4531c4f99a54aafac96de9796160, type: 3}
       propertyPath: m_Name
       value: Wall03_GEO (2)
@@ -1410,6 +1438,10 @@ PrefabInstance:
       propertyPath: m_ConstrainProportionsScale
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: 3bdb4531c4f99a54aafac96de9796160, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 65e1b2ef0ecb9cd4fa11f940fd967c84, type: 2}
     - target: {fileID: 919132149155446097, guid: 3bdb4531c4f99a54aafac96de9796160, type: 3}
       propertyPath: m_Name
       value: Wall03_GEO
@@ -1517,6 +1549,10 @@ PrefabInstance:
       propertyPath: m_ConstrainProportionsScale
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: 8e772568923b5984b8167ef84f93f6e7, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 65e1b2ef0ecb9cd4fa11f940fd967c84, type: 2}
     - target: {fileID: 919132149155446097, guid: 8e772568923b5984b8167ef84f93f6e7, type: 3}
       propertyPath: m_Name
       value: Wall02_GEO (5)
@@ -1590,6 +1626,10 @@ PrefabInstance:
       propertyPath: m_ConstrainProportionsScale
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: 8e772568923b5984b8167ef84f93f6e7, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 65e1b2ef0ecb9cd4fa11f940fd967c84, type: 2}
     - target: {fileID: 919132149155446097, guid: 8e772568923b5984b8167ef84f93f6e7, type: 3}
       propertyPath: m_Name
       value: Wall02_GEO
@@ -1723,6 +1763,10 @@ PrefabInstance:
       propertyPath: m_ConstrainProportionsScale
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: d78641285ec56cc4fad5d74a49c2d49f, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 65e1b2ef0ecb9cd4fa11f940fd967c84, type: 2}
     - target: {fileID: 919132149155446097, guid: d78641285ec56cc4fad5d74a49c2d49f, type: 3}
       propertyPath: m_Name
       value: Wall01_GEO (4)
@@ -1827,6 +1871,10 @@ PrefabInstance:
       propertyPath: m_ConstrainProportionsScale
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: d78641285ec56cc4fad5d74a49c2d49f, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 65e1b2ef0ecb9cd4fa11f940fd967c84, type: 2}
     - target: {fileID: 919132149155446097, guid: d78641285ec56cc4fad5d74a49c2d49f, type: 3}
       propertyPath: m_Name
       value: Wall01_GEO (5)
@@ -2021,6 +2069,10 @@ PrefabInstance:
       propertyPath: m_ConstrainProportionsScale
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: 3bdb4531c4f99a54aafac96de9796160, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 65e1b2ef0ecb9cd4fa11f940fd967c84, type: 2}
     - target: {fileID: 919132149155446097, guid: 3bdb4531c4f99a54aafac96de9796160, type: 3}
       propertyPath: m_Name
       value: Wall03_GEO (1)
@@ -2167,6 +2219,10 @@ PrefabInstance:
       propertyPath: m_ConstrainProportionsScale
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: d78641285ec56cc4fad5d74a49c2d49f, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 65e1b2ef0ecb9cd4fa11f940fd967c84, type: 2}
     - target: {fileID: 919132149155446097, guid: d78641285ec56cc4fad5d74a49c2d49f, type: 3}
       propertyPath: m_Name
       value: Wall01_GEO (7)
@@ -2313,6 +2369,10 @@ PrefabInstance:
       propertyPath: m_ConstrainProportionsScale
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: d78641285ec56cc4fad5d74a49c2d49f, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 65e1b2ef0ecb9cd4fa11f940fd967c84, type: 2}
     - target: {fileID: 919132149155446097, guid: d78641285ec56cc4fad5d74a49c2d49f, type: 3}
       propertyPath: m_Name
       value: Wall01_GEO (1)
@@ -2386,6 +2446,10 @@ PrefabInstance:
       propertyPath: m_ConstrainProportionsScale
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: 6a9b75d815da0174d819c30ca5bedb69, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 65e1b2ef0ecb9cd4fa11f940fd967c84, type: 2}
     - target: {fileID: 919132149155446097, guid: 6a9b75d815da0174d819c30ca5bedb69, type: 3}
       propertyPath: m_Name
       value: WallCorner_GEO
@@ -2567,6 +2631,10 @@ PrefabInstance:
       propertyPath: m_ConstrainProportionsScale
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: 6a9b75d815da0174d819c30ca5bedb69, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 65e1b2ef0ecb9cd4fa11f940fd967c84, type: 2}
     - target: {fileID: 919132149155446097, guid: 6a9b75d815da0174d819c30ca5bedb69, type: 3}
       propertyPath: m_Name
       value: WallCorner_GEO (3)
@@ -2744,6 +2812,10 @@ PrefabInstance:
       propertyPath: m_ConstrainProportionsScale
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: d78641285ec56cc4fad5d74a49c2d49f, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 65e1b2ef0ecb9cd4fa11f940fd967c84, type: 2}
     - target: {fileID: 919132149155446097, guid: d78641285ec56cc4fad5d74a49c2d49f, type: 3}
       propertyPath: m_Name
       value: Wall01_GEO (3)
@@ -2817,6 +2889,10 @@ PrefabInstance:
       propertyPath: m_ConstrainProportionsScale
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: d78641285ec56cc4fad5d74a49c2d49f, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 65e1b2ef0ecb9cd4fa11f940fd967c84, type: 2}
     - target: {fileID: 919132149155446097, guid: d78641285ec56cc4fad5d74a49c2d49f, type: 3}
       propertyPath: m_Name
       value: Wall01_GEO (6)
@@ -2890,6 +2966,10 @@ PrefabInstance:
       propertyPath: m_ConstrainProportionsScale
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: 8e772568923b5984b8167ef84f93f6e7, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 65e1b2ef0ecb9cd4fa11f940fd967c84, type: 2}
     - target: {fileID: 919132149155446097, guid: 8e772568923b5984b8167ef84f93f6e7, type: 3}
       propertyPath: m_Name
       value: Wall02_GEO (6)
@@ -3134,6 +3214,10 @@ PrefabInstance:
       propertyPath: m_ConstrainProportionsScale
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: 8e772568923b5984b8167ef84f93f6e7, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 65e1b2ef0ecb9cd4fa11f940fd967c84, type: 2}
     - target: {fileID: 919132149155446097, guid: 8e772568923b5984b8167ef84f93f6e7, type: 3}
       propertyPath: m_Name
       value: Wall02_GEO (3)
@@ -3337,6 +3421,10 @@ PrefabInstance:
       propertyPath: m_ConstrainProportionsScale
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: 8e772568923b5984b8167ef84f93f6e7, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 65e1b2ef0ecb9cd4fa11f940fd967c84, type: 2}
     - target: {fileID: 919132149155446097, guid: 8e772568923b5984b8167ef84f93f6e7, type: 3}
       propertyPath: m_Name
       value: Wall02_GEO (4)
@@ -3488,6 +3576,10 @@ PrefabInstance:
       propertyPath: m_ConstrainProportionsScale
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: 6a9b75d815da0174d819c30ca5bedb69, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 65e1b2ef0ecb9cd4fa11f940fd967c84, type: 2}
     - target: {fileID: 919132149155446097, guid: 6a9b75d815da0174d819c30ca5bedb69, type: 3}
       propertyPath: m_Name
       value: WallCorner_GEO (1)
@@ -3561,6 +3653,10 @@ PrefabInstance:
       propertyPath: m_ConstrainProportionsScale
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: d78641285ec56cc4fad5d74a49c2d49f, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 65e1b2ef0ecb9cd4fa11f940fd967c84, type: 2}
     - target: {fileID: 919132149155446097, guid: d78641285ec56cc4fad5d74a49c2d49f, type: 3}
       propertyPath: m_Name
       value: Wall01_GEO (2)
@@ -3665,6 +3761,10 @@ PrefabInstance:
       propertyPath: m_ConstrainProportionsScale
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: 8e772568923b5984b8167ef84f93f6e7, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 65e1b2ef0ecb9cd4fa11f940fd967c84, type: 2}
     - target: {fileID: 919132149155446097, guid: 8e772568923b5984b8167ef84f93f6e7, type: 3}
       propertyPath: m_Name
       value: Wall02_GEO (2)
@@ -4678,9 +4778,9 @@ SceneRoots:
   - {fileID: 1815777657}
   - {fileID: 1175032784}
   - {fileID: 479274670}
-  - {fileID: 257001624}
   - {fileID: 952261483}
   - {fileID: 1273115672}
+  - {fileID: 310733536}
   - {fileID: 3304496}
   - {fileID: 375662619}
   - {fileID: 75429290}
