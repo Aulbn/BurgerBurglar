@@ -94,6 +94,7 @@ public class CustomerController : MonoBehaviour, ICustomer, IInteractable
                 _Agent.SetDestination(GameManager.ExitPosition);
                 break;            
             case AIState.Threatened:
+                _Animator.SetTrigger("trigger_robbed");
                 // Debug.Log("Threatened");
                 _Agent.SetDestination(transform.position);
                 AlertAmount = 1;
