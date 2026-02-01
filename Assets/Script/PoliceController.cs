@@ -38,6 +38,7 @@ public class PoliceController : MonoBehaviour, ICustomer
     public Animator _Animator;
     
     [Header("Audio")] 
+    public AudioSource GunClickSound;
     public AudioSource GunShotSound;
     
     private int _EnteredStateFrame = 0;
@@ -163,10 +164,11 @@ public class PoliceController : MonoBehaviour, ICustomer
     {
         _Agent.isStopped = true;
         _Animator.SetBool("bool_aim", true);
+        GunClickSound.Play();
         yield return new WaitForSeconds(1f);
         StartCoroutine(IEEmptyClip());
         PlayerController.Instance.Kill();
-        yield return new WaitForSeconds(3f);
+        yield return new WaitForSeconds(2f);
         GameManager.GameOver_Death();
     }
     

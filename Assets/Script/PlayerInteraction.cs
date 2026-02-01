@@ -120,8 +120,8 @@ public class PlayerInteraction : MonoBehaviour
             
             if (currentHostage == null && currentCustomer == null &&  currentPolice == null)
                 continue;
-            
-            Vector3 playerDir = new Vector3(PlayerController.Instance.Input.Movement.x, 0, PlayerController.Instance.Input.Movement.y);
+
+            Vector3 playerDir = PlayerController.Instance.GetProjectedInput();
             if (playerDir == Vector3.zero)
                 playerDir = transform.forward;
             float angle = Vector3.Angle(playerDir, (col.transform.position - transform.position).normalized);
